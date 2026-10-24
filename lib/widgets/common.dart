@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../theme/app_theme.dart';
 
-/// Clean card with smooth rounded corners matching Figma
+/// Clean card with smooth rounded corners matching Slide 1 & 2
 class AppCard extends StatelessWidget {
   const AppCard({
     super.key,
@@ -12,7 +13,7 @@ class AppCard extends StatelessWidget {
     this.color = AppColors.surface,
     this.radius = 20,
     this.onTap,
-    this.shadow = false,
+    this.shadow = true,
   });
 
   final Widget child;
@@ -28,24 +29,32 @@ class AppCard extends StatelessWidget {
     final borderRadius = BorderRadius.circular(radius);
     return Padding(
       padding: margin ?? EdgeInsets.zero,
-      child: Material(
-        color: color,
-        borderRadius: borderRadius,
-        clipBehavior: Clip.antiAlias,
-        elevation: shadow ? 2 : 0,
-        shadowColor: AppColors.primary.withValues(alpha: .06),
-        child: InkWell(
+      child: Container(
+        decoration: BoxDecoration(
+          color: color,
           borderRadius: borderRadius,
-          onTap: onTap,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: borderRadius,
-              border: color == AppColors.surface
-                  ? Border.all(color: AppColors.border, width: 1.2)
-                  : null,
+          border: Border.all(color: AppColors.border, width: 1.1),
+          boxShadow: shadow
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: .025),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
+              : null,
+        ),
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: borderRadius,
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            borderRadius: borderRadius,
+            onTap: onTap,
+            child: Padding(
+              padding: padding,
+              child: child,
             ),
-            padding: padding,
-            child: child,
           ),
         ),
       ),
@@ -278,7 +287,7 @@ class FigmaStatusPill extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(
+        style: GoogleFonts.plusJakartaSans(
           fontSize: 11,
           fontWeight: FontWeight.w700,
           color: color,

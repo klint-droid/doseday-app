@@ -13,8 +13,8 @@ class UserProfile {
 
   const UserProfile({
     this.id = 1,
-    this.name = 'Livia Vaccaro',
-    this.email = 'livia.vaccaro@example.com',
+    this.name = 'Olivia Vaccaro',
+    this.email = 'olivia.vaccaro@example.com',
     this.avatarPath = 'assets/images/user_avatar.png',
     this.healthGoal = 'Never miss a daily dose',
     this.wakeTime = '08:00 AM',
