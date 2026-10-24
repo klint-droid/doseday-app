@@ -51,10 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const screenTabs = document.querySelectorAll('.screen-tab-btn');
 
   const screens = {
-    home: 'assets/images/screen_home.png',
-    tasks: 'assets/images/screen_tasks.png',
-    add: 'assets/images/screen_add.png',
-    welcome: 'assets/images/screen_get_started.png'
+    adherence: 'assets/playstore/slide_1_daily_adherence.png',
+    planner: 'assets/playstore/slide_2_weekly_planner.png',
+    alarms: 'assets/playstore/slide_3_exact_alarms.png',
+    stock: 'assets/playstore/slide_4_stock_and_privacy.png',
+    home: 'assets/playstore/slide_1_daily_adherence.png',
+    tasks: 'assets/playstore/slide_2_weekly_planner.png',
+    add: 'assets/playstore/slide_3_exact_alarms.png',
+    welcome: 'assets/playstore/slide_4_stock_and_privacy.png'
   };
 
   screenTabs.forEach(tab => {
@@ -228,5 +232,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
+  }
+
+  // 7. Lightbox Modal Preview for Play Store Screenshots
+  const lightboxModal = document.getElementById('lightbox-modal');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxClose = document.getElementById('lightbox-close');
+  const lightboxTriggers = document.querySelectorAll('.js-lightbox-trigger');
+
+  if (lightboxModal && lightboxImg) {
+    lightboxTriggers.forEach(card => {
+      card.addEventListener('click', () => {
+        const src = card.getAttribute('data-img');
+        if (src) {
+          lightboxImg.src = src;
+          lightboxModal.classList.add('active');
+        }
+      });
+    });
+
+    const closeModal = () => lightboxModal.classList.remove('active');
+    if (lightboxClose) lightboxClose.addEventListener('click', closeModal);
+    lightboxModal.addEventListener('click', (e) => {
+      if (e.target === lightboxModal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightboxModal.classList.contains('active')) closeModal();
+    });
   }
 });
