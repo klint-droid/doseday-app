@@ -1,0 +1,9 @@
+{
+  "name": "doseday-website",
+  "version": "1.0.0",
+  "description": "DoseDay - Smart Medication Reminder Landing Page & APK Download Portal",
+  "scripts": {
+    "start": "python -m http.server 8085",
+    "deploy": "npx vercel --prod"
+  }
+}

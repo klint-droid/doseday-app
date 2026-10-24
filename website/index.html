@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DoseDay — Smart Medication Reminder & Pill Tracker</title>
+  <meta name="description" content="Never miss a dose. DoseDay is a premium, privacy-first medication reminder app with Monday-to-Sunday weekly scheduling and reliable closed-app audible alarms. Download the Android APK today.">
+  <link rel="icon" type="image/png" href="assets/images/app_logo.png">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Ambient Background Glows -->
+  <div class="ambient-glow ambient-glow-1"></div>
+  <div class="ambient-glow ambient-glow-2"></div>
+
+  <!-- Navigation Bar -->
+  <header class="site-nav">
+    <div class="container">
+      <a href="#" class="brand-wrap">
+        <img src="assets/images/app_logo.png" alt="DoseDay Logo" class="brand-logo-img">
+        <div class="brand-text">
+          <span class="brand-title">DoseDay</span>
+          <span class="brand-tag">Pill & Health Companion</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#features" class="nav-link">Features</a></li>
+          <li><a href="#interactive-demo" class="nav-link">Live Demo</a></li>
+          <li><a href="#how-to-install" class="nav-link">How to Install</a></li>
+          <li><a href="#faq" class="nav-link">FAQ</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-btn" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
+          <!-- Filled by app.js -->
+        </button>
+
+        <a href="downloads/DoseDay.apk" download="DoseDay.apk" class="btn-primary" id="nav-download-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Download APK</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-pill">
+            <span class="hero-pill-dot"></span>
+            <span>2026 Edition • Smart Pill & Schedule Companion</span>
+          </div>
+
+          <h1 class="hero-title">
+            Never Miss a Dose. <br>
+            <span class="hero-title-highlight">Always Stay on Track.</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            DoseDay combines a structured Monday–Sunday weekly planner with unmissable, high-priority audible alarms that fire reliably even when the app is completely closed. 100% offline and secure.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="downloads/DoseDay.apk" download="DoseDay.apk" class="btn-primary" id="hero-download-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-1.0001 0-.5516.4482-.9998.9993-.9998.5521 0 1.0003.4482 1.0003.9998 0 .5515-.4482 1.0001-1.0003 1.0001m-11.046 0c-.5511 0-.9993-.4486-.9993-1.0001 0-.5516.4482-.9998.9993-.9998.5521 0 1.0003.4482 1.0003.9998 0 .5515-.4482 1.0001-1.0003 1.0001m11.4045-6.02l1.9967-3.4564c.1356-.2348.0551-.5363-.1795-.6718-.235-.1355-.5368-.055-.6723.18l-2.0236 3.503c-1.5342-.6998-3.2643-1.091-5.0028-1.091-1.7384 0-3.4685.3912-5.0028 1.091l-2.0236-3.503c-.1355-.235-.4373-.3155-.6723-.18-.2346.1355-.3151.437-.1795.6718l1.9967 3.4564c-3.7042 1.946-6.1963 5.7538-6.1963 10.1506h24.1824c0-4.3968-2.4921-8.2046-6.1963-10.1506"/>
+              </svg>
+              <div class="apk-badge-details">
+                <span class="apk-badge-main">Download DoseDay APK</span>
+                <span class="apk-badge-sub">v1.0.0 Release • Android 8.0+ (~58 MB)</span>
+              </div>
+            </a>
+
+            <a href="#interactive-demo" class="btn-secondary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span>Try Live Simulator</span>
+            </a>
+          </div>
+
+          <ul class="hero-trust-list">
+            <li class="hero-trust-item">
+              <span class="hero-trust-icon">✓</span> 100% Offline & Private
+            </li>
+            <li class="hero-trust-item">
+              <span class="hero-trust-icon">✓</span> Custom Soothing Chime
+            </li>
+            <li class="hero-trust-item">
+              <span class="hero-trust-icon">✓</span> Closed-App Exact Alarms
+            </li>
+            <li class="hero-trust-item">
+              <span class="hero-trust-icon">✓</span> Zero Ads & Zero Tracking
+            </li>
+          </ul>
+        </div>
+
+        <!-- Phone Mockup with Realistic Frame -->
+        <div class="mockup-wrapper">
+          <!-- Floating notification chime pill -->
+          <div class="floating-pill floating-pill-left">
+            <div class="pill-icon pill-icon-chime">🔔</div>
+            <div>
+              <div class="pill-title">Exact Alarm Chime</div>
+              <div class="pill-desc">Wakes device on time</div>
+            </div>
+            <button class="play-audio-btn js-play-chime" title="Play Chime" aria-label="Play chime">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Floating Monday-Sunday weekly pill -->
+          <div class="floating-pill floating-pill-right">
+            <div class="pill-icon pill-icon-calendar">📅</div>
+            <div>
+              <div class="pill-title">Mon – Sun Strip</div>
+              <div class="pill-desc">Continuous 7-Day Cycle</div>
+            </div>
+          </div>
+
+          <div class="phone-frame">
+            <div class="phone-notch">
+              <span class="notch-camera"></span>
+              <span class="notch-speaker"></span>
+            </div>
+            <img src="assets/images/screen_home.png" alt="DoseDay App Interface" class="phone-screen" id="phone-screen-img">
+          </div>
+
+          <!-- Screen Switcher Tabs -->
+          <div class="mockup-controls">
+            <button class="screen-tab-btn active" data-screen="home">Home</button>
+            <button class="screen-tab-btn" data-screen="tasks">Schedule</button>
+            <button class="screen-tab-btn" data-screen="add">Add Medicine</button>
+            <button class="screen-tab-btn" data-screen="welcome">Onboarding</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Features Grid -->
+  <section class="section-wrap" id="features">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">Designed for Perfection</span>
+        <h2 class="section-title">Built to Keep You Consistently Healthy</h2>
+        <p class="section-desc">Every interaction in DoseDay is fine-tuned to remove friction, protect your privacy, and guarantee you never miss a pill.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1: Mon-Sun Schedule -->
+        <div class="feature-card">
+          <div class="feature-icon-box" style="background: var(--primary-soft); color: var(--primary);">
+            📅
+          </div>
+          <h3 class="feature-card-title">Monday–Sunday Calendar</h3>
+          <p class="feature-card-desc">
+            Structured 7-day strip starting cleanly on Monday and ending Sunday. Swipe left or right to seamlessly restart to another week, with a quick <strong>Today</strong> button.
+          </p>
+        </div>
+
+        <!-- Feature 2: Closed-App Alarms -->
+        <div class="feature-card">
+          <div class="feature-icon-box" style="background: var(--coral-bg); color: var(--coral);">
+            🔔
+          </div>
+          <h3 class="feature-card-title">Closed-App Exact Alarms</h3>
+          <p class="feature-card-desc">
+            Powered by Android's exact alarm scheduling and high-priority notification channels. Reminders fire with precision even when DoseDay is completely closed or killed.
+          </p>
+          <div class="audio-sample-card">
+            <div>
+              <div style="font-size: 0.82rem; font-weight: 700;">Hear Reminder Chime</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">44.1kHz Soothing Arpeggio</div>
+            </div>
+            <button class="play-audio-btn js-play-chime" title="Test Audio">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Feature 3: Stock & Refill Alerts -->
+        <div class="feature-card">
+          <div class="feature-icon-box" style="background: var(--amber-bg); color: var(--amber);">
+            💊
+          </div>
+          <h3 class="feature-card-title">Smart Pill Stock & Refills</h3>
+          <p class="feature-card-desc">
+            Tracks tablet inventory every time you take a dose. When medication supplies fall below your custom threshold, an ambient yellow restock banner alerts you in advance.
+          </p>
+        </div>
+
+        <!-- Feature 4: Adherence Analytics -->
+        <div class="feature-card">
+          <div class="feature-icon-box" style="background: var(--mint-bg); color: var(--mint);">
+            📊
+          </div>
+          <h3 class="feature-card-title">Adherence Rings & Insights</h3>
+          <p class="feature-card-desc">
+            Figma-style radial progress rings keep you motivated. Review daily completion rates, monthly streaks, and routine consistency at a single glance.
+          </p>
+        </div>
+
+        <!-- Feature 5: Wake & Sleep Sync -->
+        <div class="feature-card">
+          <div class="feature-icon-box" style="background: var(--blue-bg); color: var(--blue);">
+            🌙
+          </div>
+          <h3 class="feature-card-title">Routine & Bedtime Sync</h3>
+          <p class="feature-card-desc">
+            Set your wake-up time and bedtime in your personal profile. DoseDay organizes your daily doses into Breakfast, Lunch, Evening, and Bedtime blocks.
+          </p>
+        </div>
+
+        <!-- Feature 6: 100% Offline Privacy -->
+        <div class="feature-card">
+          <div class="feature-icon-box" style="background: var(--primary-soft); color: var(--primary);">
+            🔒
+          </div>
+          <h3 class="feature-card-title">100% On-Device Privacy</h3>
+          <p class="feature-card-desc">
+            Your medical records never leave your phone. Powered by an on-device SQLite database with zero third-party trackers, zero telemetry, and zero mandatory cloud accounts.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Interactive Week Simulator -->
+  <section class="section-wrap interactive-section" id="interactive-demo">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">Interactive Preview</span>
+        <h2 class="section-title">Experience the Monday–Sunday Flow</h2>
+        <p class="section-desc">Test the real date strip, jump between weeks, and click to mark sample doses as taken with audio chime feedback.</p>
+      </div>
+
+      <div class="simulator-box">
+        <div class="sim-header">
+          <div>
+            <div style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Selected Week</div>
+            <div id="sim-week-range" style="font-size: 1.15rem; font-weight: 800; color: var(--text-main);">19 – 25 Oct, 2026</div>
+          </div>
+          <div class="sim-nav">
+            <button class="sim-nav-btn" id="sim-today-btn">Today</button>
+            <button class="sim-nav-btn" id="sim-prev-week" title="Previous Week">‹ Prev</button>
+            <button class="sim-nav-btn" id="sim-next-week" title="Next Week">Next ›</button>
+          </div>
+        </div>
+
+        <!-- Monday to Sunday 7-Day Strip -->
+        <div class="sim-week-strip" id="sim-week-strip">
+          <!-- Filled by app.js -->
+        </div>
+
+        <!-- Sample Doses for Selected Date -->
+        <div style="margin-top: 24px;">
+          <h4 style="font-size: 1.1rem; margin-bottom: 14px;">Scheduled Doses for this Day</h4>
+
+          <div class="sim-dose-item">
+            <div class="sim-dose-info">
+              <div class="sim-dose-pill-icon" style="background: var(--coral-bg); color: var(--coral);">💊</div>
+              <div>
+                <div style="font-weight: 800; font-size: 1rem;">Amoxicillin</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">500 mg • 1 tablet(s) • After meal (08:00 AM)</div>
+              </div>
+            </div>
+            <button class="sim-check-btn js-sim-check">Take Dose</button>
+          </div>
+
+          <div class="sim-dose-item">
+            <div class="sim-dose-info">
+              <div class="sim-dose-pill-icon" style="background: var(--amber-bg); color: var(--amber);">☀️</div>
+              <div>
+                <div style="font-weight: 800; font-size: 1rem;">Vitamin D3 + K2</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">2000 IU • 1 softgel • Morning routine (09:30 AM)</div>
+              </div>
+            </div>
+            <button class="sim-check-btn js-sim-check">Take Dose</button>
+          </div>
+
+          <div class="sim-dose-item">
+            <div class="sim-dose-info">
+              <div class="sim-dose-pill-icon" style="background: var(--blue-bg); color: var(--blue);">🌙</div>
+              <div>
+                <div style="font-weight: 800; font-size: 1rem;">Omega-3 Fish Oil</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">1000 mg • 2 capsule(s) • Before bedtime (09:00 PM)</div>
+              </div>
+            </div>
+            <button class="sim-check-btn js-sim-check">Take Dose</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Section & Direct APK Link -->
+  <section class="section-wrap download-section" id="download">
+    <div class="container">
+      <div class="download-box">
+        <div>
+          <span style="display:inline-block; padding: 6px 14px; background: rgba(255,255,255,0.2); border-radius: 999px; font-size: 0.85rem; font-weight: 800; margin-bottom: 16px;">Direct APK Download</span>
+          <h2 class="download-title">Get DoseDay on Your Android Device</h2>
+          <p class="download-desc">
+            Download the official standalone Android APK directly. Compatible with Android 8.0 Oreo through Android 15. No Google Play account required.
+          </p>
+
+          <div style="display:flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+            <a href="downloads/DoseDay.apk" download="DoseDay.apk" class="btn-primary download-btn-white" id="main-apk-download-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download APK (v1.0.0)</span>
+            </a>
+
+            <div style="font-size: 0.85rem; color: rgba(255,255,255,0.85);">
+              <div>• Package: <code>com.example.medication_reminder</code></div>
+              <div>• Build Size: <strong>~58.7 MB</strong> • Verified Clean</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scan to Download QR Card -->
+        <div class="qr-card">
+          <div class="qr-canvas-wrap">
+            <canvas id="qr-canvas"></canvas>
+          </div>
+          <div class="qr-card-title">Scan from Android Phone</div>
+          <div class="qr-card-sub">Point your camera to download APK directly over your network</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to Install Steps -->
+  <section class="section-wrap" id="how-to-install">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">Easy Setup</span>
+        <h2 class="section-title">How to Install in 3 Simple Steps</h2>
+        <p class="section-desc">Installing the APK directly on Android takes less than 60 seconds.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <h3 style="font-size: 1.3rem; margin-bottom: 10px;">Download the APK</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Tap the <strong>Download APK</strong> button above to save <code>DoseDay.apk</code> onto your phone's storage.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <h3 style="font-size: 1.3rem; margin-bottom: 10px;">Allow Installation</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Open the downloaded file. If prompted by Android, tap <em>Settings</em> and enable <em>"Allow from this source"</em>.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <h3 style="font-size: 1.3rem; margin-bottom: 10px;">Open & Set Routine</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Launch DoseDay, grant notification & alarm permissions when prompted, and start adding your daily medications!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section-wrap" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">Got Questions?</span>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-desc">Everything you need to know about notifications, privacy, and device compatibility.</p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Do alarms ring if the app is completely closed or killed?</span>
+            <span class="faq-chevron">▾</span>
+          </div>
+          <div class="faq-answer">
+            Yes! DoseDay registers exact one-shot alarms with Android's system <code>AlarmManager</code> using <code>SCHEDULE_EXACT_ALARM</code> and <code>USE_EXACT_ALARM</code>. Even if you swipe the app away from recent tasks, the system wakes the device and triggers the high-priority reminder with sound and vibration at the exact minute.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>How does the Monday-to-Sunday weekly strip work?</span>
+            <span class="faq-chevron">▾</span>
+          </div>
+          <div class="faq-answer">
+            The schedule calendar is structured as a full 7-day Monday through Sunday calendar week. When you swipe left/right or tap the previous/next chevrons, the view restarts smoothly with the next or previous week's Monday-to-Sunday block. You can also tap the <em>Today</em> button at any time to return to today's active date.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Is my health and medication data private?</span>
+            <span class="faq-chevron">▾</span>
+          </div>
+          <div class="faq-answer">
+            100% private. All medication names, dosage quantities, refill logs, and profile records are stored exclusively in your device's local encrypted SQLite database. There are no remote servers, no user accounts required, and no tracking scripts.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Tips for Vivo, Xiaomi, Oppo, or Samsung phones?</span>
+            <span class="faq-chevron">▾</span>
+          </div>
+          <div class="faq-answer">
+            Some Android manufacturers enable aggressive battery savers. For maximum reliability, go to your phone's <em>Settings &gt; Apps &gt; DoseDay &gt; Battery</em> and set it to <strong>"Unrestricted"</strong> or <strong>"No restrictions"</strong>, and ensure <em>"Alarms & Reminders"</em> permission is allowed.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand-wrap" style="margin-bottom: 12px;">
+            <img src="assets/images/app_logo.png" alt="DoseDay Logo" class="brand-logo-img">
+            <span class="brand-title">DoseDay</span>
+          </div>
+          <p class="footer-copy">
+            The modern, privacy-first medication reminder and pill tracking app designed to make healthy routines effortless.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Quick Links</h5>
+          <ul class="footer-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#interactive-demo">Live Simulator</a></li>
+            <li><a href="#how-to-install">Installation Guide</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Direct Download</h5>
+          <ul class="footer-links">
+            <li><a href="downloads/DoseDay.apk" download="DoseDay.apk">DoseDay APK (Latest Release)</a></li>
+            <li><a href="downloads/DoseDay-release-v1.0.apk" download="DoseDay-release-v1.0.apk">Version 1.0.0 Mirror</a></li>
+            <li><span style="font-size:0.85rem; color:var(--text-muted);">Android 8.0 to Android 15</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 DoseDay. All rights reserved. Free & Open Personal Health Tool.</div>
+        <div>Built with Flutter & SQLite • 100% Offline</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
