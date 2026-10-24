@@ -1093,9 +1093,10 @@ img, video {
    ========================================================================== */
 .playstore-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  margin-top: 40px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  max-width: 1140px;
+  margin: 40px auto 0 auto;
 }
 
 .playstore-card {

@@ -51,14 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const screenTabs = document.querySelectorAll('.screen-tab-btn');
 
   const screens = {
-    adherence: 'assets/playstore/slide_1_daily_adherence.png',
-    planner: 'assets/playstore/slide_2_weekly_planner.png',
-    alarms: 'assets/playstore/slide_3_exact_alarms.png',
-    stock: 'assets/playstore/slide_4_stock_and_privacy.png',
-    home: 'assets/playstore/slide_1_daily_adherence.png',
-    tasks: 'assets/playstore/slide_2_weekly_planner.png',
-    add: 'assets/playstore/slide_3_exact_alarms.png',
-    welcome: 'assets/playstore/slide_4_stock_and_privacy.png'
+    adherence: 'assets/playstore/playstore_slide_one_1792822482509.jpg',
+    planner: 'assets/playstore/playstore_slide_two_1792822515894.jpg',
+    alarms: 'assets/playstore/playstore_slide_three_1792822533786.jpg',
+    home: 'assets/playstore/playstore_slide_one_1792822482509.jpg',
+    tasks: 'assets/playstore/playstore_slide_two_1792822515894.jpg',
+    add: 'assets/playstore/playstore_slide_three_1792822533786.jpg'
   };
 
   screenTabs.forEach(tab => {
