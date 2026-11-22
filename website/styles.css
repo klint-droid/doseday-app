@@ -1,7 +1,7 @@
 /* ==========================================================================
-   DoseDay Website — Tarsi.cloud & GCash Inspired Design System
+   DoseDay Website — Modern Super-App Design System
    Palette: Forest Emerald (#2D6A4F), Deep Pine (#1B4332), Warm Sage (#F4F8F5),
-            Tarsi Rose Donut (#EC4899), Streak Flame (#FF6B2C)
+            Rose Donut (#EC4899), Streak Flame (#FF6B2C)
    ========================================================================== */
 
 :root {
@@ -26,7 +26,7 @@
   --blue: #007DFE;
   --blue-bg: #E8F3FF;
 
-  /* Light Mode Default (Clean Tarsi Sage & Crisp White) */
+  /* Light Mode Default (Clean Sage & Crisp White) */
   --bg: #F4F8F5;
   --bg-gradient: radial-gradient(circle at 15% 10%, rgba(82, 183, 136, 0.14) 0%, transparent 42%),
                  radial-gradient(circle at 85% 65%, rgba(45, 106, 79, 0.10) 0%, transparent 48%),
@@ -146,7 +146,7 @@ img {
 }
 
 /* ==========================================================================
-   Tarsi-Style Floating Pill Navbar
+   Floating Pill Navbar
    ========================================================================== */
 .site-nav {
   position: fixed;
@@ -299,7 +299,7 @@ img {
 }
 
 /* ==========================================================================
-   Hero Section & Live Tarsi Mobile UI Replica
+   Hero Section & Live Mobile UI Replica
    ========================================================================== */
 .hero-section {
   padding-top: 135px;
@@ -382,7 +382,7 @@ img {
   font-weight: 800;
 }
 
-.tarsi-metrics-strip {
+.dd-metrics-strip {
   display: flex;
   align-items: center;
   gap: 22px;
@@ -394,25 +394,25 @@ img {
   box-shadow: var(--card-shadow);
   max-width: 560px;
 }
-.tarsi-metric-val {
+.dd-metric-val {
   font-family: var(--font-heading);
   font-size: 1.35rem;
   font-weight: 900;
   color: var(--primary);
 }
-.tarsi-metric-lbl {
+.dd-metric-lbl {
   font-size: 0.78rem;
   color: var(--text-muted);
   font-weight: 600;
 }
-.tarsi-metric-divider {
+.dd-metric-divider {
   width: 1px;
   height: 36px;
   background: var(--surface-border);
 }
 
 /* ==========================================================================
-   Live Interactive Tarsi + GCash Phone Mockup Replica (Matches Uploaded Photo)
+   Live Interactive Phone Mockup Replica
    ========================================================================== */
 .mockup-wrapper {
   position: relative;
@@ -448,7 +448,7 @@ img {
   z-index: 30;
 }
 
-.tarsi-app-screen {
+.dd-app-screen {
   width: 100%;
   height: 100%;
   display: flex;
@@ -458,19 +458,19 @@ img {
   overflow-y: auto;
   scrollbar-width: none;
 }
-.tarsi-app-screen::-webkit-scrollbar {
+.dd-app-screen::-webkit-scrollbar {
   display: none;
 }
 
 /* Scenic Rice-Terraces Header inside Phone */
-.tarsi-scenic-header {
+.dd-scenic-header {
   position: relative;
   padding: 28px 16px 24px 16px;
   background: linear-gradient(180deg, #EBF5EE 0%, #CBE5D3 55%, #88C19A 100%);
   overflow: hidden;
   flex-shrink: 0;
 }
-.tarsi-hill-bg {
+.dd-hill-bg {
   position: absolute;
   inset: 0;
   background:
@@ -479,7 +479,7 @@ img {
   pointer-events: none;
 }
 
-.tarsi-top-bar {
+.dd-top-bar {
   position: relative;
   z-index: 2;
   display: flex;
@@ -488,7 +488,7 @@ img {
   margin-bottom: 12px;
 }
 
-.tarsi-streak-btn {
+.dd-streak-btn {
   width: 38px;
   height: 38px;
   border-radius: 50%;
@@ -516,7 +516,7 @@ img {
   border: 1.5px solid #FFFFFF;
 }
 
-.tarsi-top-capsule {
+.dd-top-capsule {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -551,35 +551,35 @@ img {
   background: #EA580C;
 }
 
-.tarsi-greeting-wrap {
+.dd-greeting-wrap {
   position: relative;
   z-index: 2;
   margin-bottom: 10px;
 }
-.tarsi-date-label {
+.dd-date-label {
   font-size: 9.5px;
   font-weight: 800;
   letter-spacing: 0.06em;
   color: #1F3528;
 }
-.tarsi-greeting-title {
+.dd-greeting-title {
   font-size: 19px;
   font-weight: 700;
   color: #13261B;
   letter-spacing: -0.02em;
 }
-.tarsi-greeting-title strong {
+.dd-greeting-title strong {
   font-weight: 900;
 }
 
-.tarsi-mascot-row {
+.dd-mascot-row {
   position: relative;
   z-index: 2;
   display: flex;
   align-items: flex-end;
   gap: 8px;
 }
-.tarsi-mascot-avatar {
+.dd-mascot-avatar {
   width: 74px;
   height: 74px;
   border-radius: 50%;
@@ -589,13 +589,13 @@ img {
   flex-shrink: 0;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
 }
-.tarsi-mascot-avatar img {
+.dd-mascot-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.tarsi-speech-bubble {
+.dd-speech-bubble {
   background: #FFFFFF;
   border-radius: 16px;
   padding: 10px 12px;
@@ -603,7 +603,7 @@ img {
   position: relative;
   flex: 1;
 }
-.tarsi-speech-bubble::before {
+.dd-speech-bubble::before {
   content: '';
   position: absolute;
   left: -6px;
@@ -619,7 +619,7 @@ img {
   color: #2D6A4F;
   margin-bottom: 2px;
 }
-.tarsi-speech-bubble p {
+.dd-speech-bubble p {
   font-size: 10.5px;
   line-height: 1.35;
   color: #4A5950;
@@ -627,7 +627,7 @@ img {
 }
 
 /* White Sheet Body inside Phone */
-.tarsi-sheet-body {
+.dd-sheet-body {
   background: #F5F8F6;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
@@ -638,38 +638,38 @@ img {
   flex: 1;
 }
 
-.tarsi-section-row {
+.dd-section-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 8px;
 }
-.tarsi-sec-title {
+.dd-sec-title {
   font-size: 14px;
   font-weight: 800;
   color: #18281F;
 }
-.tarsi-edit-icon {
+.dd-edit-icon {
   color: #2D6A4F;
   font-size: 14px;
   cursor: pointer;
 }
 
 /* Quick Actions Row inside Phone */
-.tarsi-quick-grid {
+.dd-quick-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 6px;
   margin-bottom: 12px;
 }
-.tarsi-quick-item {
+.dd-quick-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   cursor: pointer;
 }
-.tarsi-quick-box {
+.dd-quick-box {
   width: 44px;
   height: 44px;
   background: #FFFFFF;
@@ -683,24 +683,24 @@ img {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
   transition: transform 0.15s ease;
 }
-.tarsi-quick-item:hover .tarsi-quick-box {
+.dd-quick-item:hover .dd-quick-box {
   transform: translateY(-2px);
   border-color: #2D6A4F;
 }
-.tarsi-quick-item span {
+.dd-quick-item span {
   font-size: 9.5px;
   font-weight: 600;
   color: #5C6B62;
 }
 
 /* Bento Summary Row inside Phone */
-.tarsi-bento-grid {
+.dd-bento-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-bottom: 14px;
 }
-.tarsi-bento-card {
+.dd-bento-card {
   background: #FFFFFF;
   border-radius: 18px;
   padding: 11px;
@@ -711,12 +711,12 @@ img {
   min-height: 120px;
 }
 
-.tarsi-donut-row {
+.dd-donut-row {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.tarsi-donut-ring {
+.dd-donut-ring {
   width: 58px;
   height: 58px;
   border-radius: 50%;
@@ -727,7 +727,7 @@ img {
   position: relative;
   flex-shrink: 0;
 }
-.tarsi-donut-ring::after {
+.dd-donut-ring::after {
   content: '';
   position: absolute;
   width: 42px;
@@ -735,7 +735,7 @@ img {
   background: #FFFFFF;
   border-radius: 50%;
 }
-.tarsi-donut-ring span {
+.dd-donut-ring span {
   position: relative;
   z-index: 2;
   font-size: 12px;
@@ -743,7 +743,7 @@ img {
   color: #18281F;
 }
 
-.tarsi-donut-legend {
+.dd-donut-legend {
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -764,7 +764,7 @@ img {
 .dot-amber { background: #F59E0B; }
 .dot-blue { background: #3B82F6; }
 
-.tarsi-card-foot {
+.dd-card-foot {
   font-size: 9px;
   font-weight: 700;
   color: #6B7B71;
@@ -772,23 +772,23 @@ img {
   margin-top: 6px;
 }
 
-.tarsi-today-title {
+.dd-today-title {
   font-size: 12.5px;
   font-weight: 800;
   color: #18281F;
 }
-.tarsi-trend-up {
+.dd-trend-up {
   font-size: 11px;
   font-weight: 800;
   color: #2D6A4F;
 }
-.tarsi-trend-down {
+.dd-trend-down {
   font-size: 14px;
   font-weight: 900;
   color: #18281F;
 }
 
-.tarsi-period-pills {
+.dd-period-pills {
   display: flex;
   background: #F0F5F2;
   border-radius: 12px;
@@ -812,17 +812,17 @@ img {
 }
 
 /* Doses Due Section inside Phone */
-.tarsi-due-header {
+.dd-due-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 8px;
 }
-.tarsi-sec-sub {
+.dd-sec-sub {
   font-size: 10px;
   color: #6B7B71;
 }
-.tarsi-due-total {
+.dd-due-total {
   text-align: right;
 }
 .due-total-val {
@@ -836,13 +836,13 @@ img {
   color: #6B7B71;
 }
 
-.tarsi-due-list {
+.dd-due-list {
   background: #FFFFFF;
   border-radius: 18px;
   padding: 4px 10px;
   border: 1px solid #E6ECE8;
 }
-.tarsi-due-item {
+.dd-due-item {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -851,10 +851,10 @@ img {
   cursor: pointer;
   transition: opacity 0.2s;
 }
-.tarsi-due-item:last-child {
+.dd-due-item:last-child {
   border-bottom: none;
 }
-.tarsi-due-item.taken {
+.dd-due-item.taken {
   opacity: 0.65;
 }
 .due-date-box {
@@ -942,7 +942,7 @@ img {
 }
 
 /* Floating Glass Bottom Capsule Bar + Circular '+' FAB inside Phone */
-.tarsi-bottom-dock {
+.dd-bottom-dock {
   position: absolute;
   bottom: 10px;
   left: 12px;
@@ -952,7 +952,7 @@ img {
   align-items: center;
   gap: 8px;
 }
-.tarsi-nav-capsule {
+.dd-nav-capsule {
   flex: 1;
   height: 52px;
   background: rgba(255, 255, 255, 0.95);
@@ -964,7 +964,7 @@ img {
   grid-template-columns: repeat(4, 1fr);
   box-shadow: 0 10px 24px rgba(24, 40, 31, 0.12);
 }
-.tarsi-nav-tab {
+.dd-nav-tab {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -974,15 +974,15 @@ img {
   color: #18281F;
   line-height: 1.1;
 }
-.tarsi-nav-tab small {
+.dd-nav-tab small {
   font-size: 9px;
   font-weight: 700;
 }
-.tarsi-nav-tab.active {
+.dd-nav-tab.active {
   background: #E2EFE7;
   color: #2D6A4F;
 }
-.tarsi-plus-fab {
+.dd-plus-fab {
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -1135,7 +1135,7 @@ img {
 }
 
 /* ==========================================================================
-   "Talk to Tarsi • DoseDay" Natural Language Section
+   "Talk to DoseDay" Natural Language Section
    ========================================================================== */
 .talk-card {
   background: var(--surface);
@@ -1643,11 +1643,11 @@ img {
   .features-grid, .footer-grid {
     grid-template-columns: 1fr;
   }
-  .tarsi-metrics-strip {
+  .dd-metrics-strip {
     flex-direction: column;
     align-items: flex-start;
   }
-  .tarsi-metric-divider {
+  .dd-metric-divider {
     display: none;
   }
 }

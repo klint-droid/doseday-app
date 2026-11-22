@@ -1,16 +1,16 @@
 /**
- * DoseDay Website Logic — Tarsi & GCash UI Edition
- * - Interactive Tarsi Mobile UI Replica (Quick Actions, Day/Week/Month Bento toggle, Doses Due check-off)
- * - "Talk to Tarsi • DoseDay" Natural Language Parser Demo
+ * DoseDay Website Logic
+ * - Interactive Mobile UI Replica (Quick Actions, Day/Week/Month Bento toggle, Doses Due check-off)
+ * - "Talk to DoseDay" Natural Language Parser Demo
  * - Interactive Notification Action Simulator (Take / Snooze 10m / Skip + 44.1kHz Chime)
  * - Monday-to-Sunday 7-Day Week Simulator
  * - Light/Dark Theme Switcher & QR Code Renderer
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Theme Management (Default to Tarsi Crisp Light Sage Mode)
+  // 1. Theme Management (Default to Crisp Light Sage Mode)
   const themeBtn = document.getElementById('theme-toggle');
-  const savedTheme = localStorage.getItem('doseday_tarsi_theme') || 'light';
+  const savedTheme = localStorage.getItem('doseday_theme_v2') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeIcon(savedTheme);
 
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const current = document.documentElement.getAttribute('data-theme') || 'light';
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('doseday_tarsi_theme', next);
+      localStorage.setItem('doseday_theme_v2', next);
       updateThemeIcon(next);
     });
   }
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', playChime);
   });
 
-  // 3. Interactive Tarsi Mobile Phone Replica in Hero
+  // 3. Interactive Mobile Phone Replica in Hero
   const assistantMsg = document.getElementById('phone-assistant-msg');
   document.querySelectorAll('.js-phone-quick').forEach(item => {
     item.addEventListener('click', () => {
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 4. "Talk to Tarsi • DoseDay" Natural Language Parser Demo
+  // 4. "Talk to DoseDay" Natural Language Parser Demo
   const nlpInput = document.getElementById('nlp-demo-input');
   const nlpBtn = document.getElementById('nlp-parse-btn');
   const parsedName = document.getElementById('parsed-med-name');

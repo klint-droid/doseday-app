@@ -222,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Talk to Tarsi • DoseDay AI',
+                          'Talk to DoseDay AI',
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 18,
                             fontWeight: FontWeight.w900,
@@ -899,7 +899,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            'Tarsi • DoseDay',
+                                            'DoseDay',
                                             style: GoogleFonts.plusJakartaSans(
                                               fontSize: 13,
                                               fontWeight: FontWeight.w800,
