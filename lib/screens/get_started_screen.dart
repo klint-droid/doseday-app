@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'account_setup_screen.dart';
 import '../theme/app_theme.dart';
@@ -10,103 +11,94 @@ class GetStartedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
+          padding: const EdgeInsets.symmetric(horizontal: 26),
           child: Column(
             children: [
               const Spacer(flex: 1),
-              // Figma decorative pastel dots & 3D Hero image
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  // Decorative pastel dots matching Figma screen_get_started.png
-                  Positioned(
-                    top: 10,
-                    right: 40,
-                    child: Container(
-                      width: 12,
-                      height: 12,
-                      decoration: const BoxDecoration(
-                        color: AppColors.blueColor,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
+              // Scenic 3D Bird Mascot Hero Showcase Card
+              Container(
+                width: double.infinity,
+                height: size.height * 0.40,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFFE6F4EC),
+                      Color(0xFFC6E5D0),
+                    ],
                   ),
-                  Positioned(
-                    bottom: 20,
-                    left: 20,
-                    child: Container(
-                      width: 10,
-                      height: 10,
-                      decoration: const BoxDecoration(
-                        color: AppColors.pinkColor,
-                        shape: BoxShape.circle,
-                      ),
+                  borderRadius: BorderRadius.circular(36),
+                  border: Border.all(color: Colors.white, width: 3),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.14),
+                      blurRadius: 30,
+                      offset: const Offset(0, 12),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 30,
-                    right: 50,
-                    child: Container(
-                      width: 14,
-                      height: 14,
-                      decoration: const BoxDecoration(
-                        color: AppColors.yellowColor,
-                        shape: BoxShape.circle,
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(33),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.asset(
+                        'assets/images/scenic_header_bg.png',
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, _, _) => const SizedBox.shrink(),
                       ),
-                    ),
-                  ),
-                  // Friendly Owl Hero Mascot
-                  Container(
-                    height: size.height * 0.35,
-                    padding: const EdgeInsets.all(12),
-                    child: Image.asset(
-                      'assets/images/app_logo.png',
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) => Image.asset(
-                        'assets/images/onboarding_hero.png',
-                        fit: BoxFit.contain,
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Image.asset(
+                            'assets/images/mascot_3d_bird.png',
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) => Image.asset(
+                              'assets/images/app_logo.png',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
               const Spacer(flex: 1),
-              // Title matching Figma typography
-              const Text(
-                'DoseDay: Smart\nMedication Tracker',
+              Text(
+                'See Your Health Clearly.\nNever Miss a Dose.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 27,
                   fontWeight: FontWeight.w900,
                   color: AppColors.text,
-                  height: 1.25,
+                  height: 1.22,
                   letterSpacing: -0.6,
                 ),
               ),
-              const SizedBox(height: 14),
-              // Subtitle
-              const Text(
-                'This productive tool is designed to help you better manage your daily doses & health schedule conveniently!',
+              const SizedBox(height: 12),
+              Text(
+                'Meet your watchful 3D health companion. Track daily doses, monitor pill stock offline, and stay on schedule with exact closed-app alarms.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: GoogleFonts.plusJakartaSans(
                   fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                   color: AppColors.textMuted,
                   height: 1.5,
                 ),
               ),
               const Spacer(flex: 2),
-              // Full-width Figma Royal Purple "Let's Start" button
               Container(
                 width: double.infinity,
                 height: 58,
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: .38),
+                      color: AppColors.primary.withValues(alpha: .32),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
@@ -126,32 +118,25 @@ class GetStartedScreen extends StatelessWidget {
                   style: FilledButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Let's Start",
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
                           color: Colors.white,
                         ),
                       ),
-                      const SizedBox(width: 14),
-                      Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: .2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(
-                          Icons.arrow_forward_rounded,
-                          size: 18,
-                          color: Colors.white,
-                        ),
+                      const SizedBox(width: 12),
+                      const Icon(
+                        Icons.arrow_forward_rounded,
+                        size: 20,
+                        color: Colors.white,
                       ),
                     ],
                   ),

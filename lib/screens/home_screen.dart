@@ -207,14 +207,17 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 children: [
                   Container(
-                    width: 44,
-                    height: 44,
-                    padding: const EdgeInsets.all(6),
+                    width: 48,
+                    height: 48,
+                    padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       color: AppColors.primaryContainer,
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    child: Image.asset('assets/images/app_logo.png'),
+                    child: Image.asset(
+                      'assets/images/mascot_3d_bird.png',
+                      errorBuilder: (_, _, _) => Image.asset('assets/images/app_logo.png'),
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -520,7 +523,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           padding: const EdgeInsets.only(bottom: 110),
           children: [
-            // 1. Tarsi Scenic Nature Header with Mascot, Speech Bubble, Streak & Action Capsule
+            // 1. Scenic Nature Header with 3D Bird Mascot, Speech Bubble, Streak & Action Capsule
             _buildScenicTarsiHeader(
               now: now,
               streakDays: streakDays,
@@ -529,48 +532,42 @@ class _HomeScreenState extends State<HomeScreen> {
               totalCount: totalCount,
             ),
 
-            // 2. White Rounded Content Container matching Tarsi & GCash UI
-            Transform.translate(
-              offset: const Offset(0, -18),
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: AppColors.background,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
-                ),
-                padding: const EdgeInsets.fromLTRB(20, 22, 20, 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // GCash / Tarsi "Quick actions" row
-                    _buildQuickActionsSection(),
+            // 2. Crisp Dashboard Body below Scenic Header
+            Container(
+              color: AppColors.background,
+              padding: const EdgeInsets.fromLTRB(20, 18, 20, 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Quick Actions row
+                  _buildQuickActionsSection(),
 
-                    const SizedBox(height: 18),
+                  const SizedBox(height: 18),
 
-                    // Side-by-Side Bento Summary Cards (Donut Breakdown + Today Day/Week/Month Card)
-                    _buildBentoSummaryRow(
-                      takenPct: takenPct,
-                      pendingPct: pendingPct,
-                      skippedPct: skippedPct,
-                      takenCount: takenCount,
-                      totalCount: totalCount,
-                    ),
+                  // Side-by-Side Bento Summary Cards (Donut Breakdown + Today Day/Week/Month Card)
+                  _buildBentoSummaryRow(
+                    takenPct: takenPct,
+                    pendingPct: pendingPct,
+                    skippedPct: skippedPct,
+                    takenCount: takenCount,
+                    totalCount: totalCount,
+                  ),
 
-                    if (_refillCount > 0) ...[
-                      const SizedBox(height: 16),
-                      _buildRefillBanner(),
-                    ],
-
-                    const SizedBox(height: 24),
-
-                    // "Doses due" Section modeled directly after Tarsi "Payments due"
-                    _buildDosesDueSection(
-                      slots: slots,
-                      now: now,
-                      nowTime: nowTime,
-                      takenCount: takenCount,
-                    ),
+                  if (_refillCount > 0) ...[
+                    const SizedBox(height: 16),
+                    _buildRefillBanner(),
                   ],
-                ),
+
+                  const SizedBox(height: 24),
+
+                  // "Doses due" Section
+                  _buildDosesDueSection(
+                    slots: slots,
+                    now: now,
+                    nowTime: nowTime,
+                    takenCount: takenCount,
+                  ),
+                ],
               ),
             ),
           ],
@@ -604,18 +601,26 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return SizedBox(
-      height: 315,
+      height: 332,
       child: Stack(
-        clipBehavior: Clip.none,
+        clipBehavior: Clip.hardEdge,
         children: [
-          // Scenic Rice Terraces / Green Hills Background Illustration
+          // 1. Scenic Rice Terraces / Green Hills Background Illustration
           Positioned.fill(
             child: CustomPaint(
               painter: _ScenicNatureBannerPainter(),
             ),
           ),
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/scenic_header_bg.png',
+              fit: BoxFit.cover,
+              alignment: Alignment.bottomRight,
+              errorBuilder: (_, _, _) => const SizedBox.shrink(),
+            ),
+          ),
 
-          // Foreground Header Content inside SafeArea
+          // 2. Top Bar + Date & Greeting inside SafeArea
           SafeArea(
             bottom: false,
             child: Padding(
@@ -627,7 +632,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Left Streak Flame Circle with Orange Number Badge (matching photo)
+                      // Left Streak Flame Circle with Orange Number Badge
                       GestureDetector(
                         onTap: widget.onOpenHistory,
                         child: Stack(
@@ -637,15 +642,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 46,
                               height: 46,
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.92),
+                                color: Colors.white.withValues(alpha: 0.94),
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: Colors.white,
-                                  width: 1.5,
+                                  color: const Color(0xFFD6E3DA),
+                                  width: 1.2,
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.06),
+                                    color: Colors.black.withValues(alpha: 0.05),
                                     blurRadius: 10,
                                     offset: const Offset(0, 3),
                                   ),
@@ -664,7 +669,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               right: -5,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
+                                  horizontal: 6.5,
                                   vertical: 2,
                                 ),
                                 decoration: BoxDecoration(
@@ -688,18 +693,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       // Right Capsule Pill: Bell + People (Profile) + Settings Gear
                       Container(
-                        height: 44,
-                        padding: const EdgeInsets.symmetric(horizontal: 6),
+                        height: 46,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.88),
+                          color: Colors.white.withValues(alpha: 0.90),
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.95),
+                            color: const Color(0xFFD4E2D9),
                             width: 1.2,
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.05),
+                              color: Colors.black.withValues(alpha: 0.04),
                               blurRadius: 12,
                               offset: const Offset(0, 3),
                             ),
@@ -708,7 +713,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            // 1. Notification Bell
                             IconButton(
                               visualDensity: VisualDensity.compact,
                               tooltip: 'Notifications & Alarms',
@@ -737,7 +741,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                             ),
-                            // 2. Profile / Caregiver Icon
                             IconButton(
                               visualDensity: VisualDensity.compact,
                               tooltip: 'Profile & Caregiver',
@@ -751,7 +754,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 size: 22,
                               ),
                             ),
-                            // 3. Settings Gear Icon
                             IconButton(
                               visualDensity: VisualDensity.compact,
                               tooltip: 'Settings',
@@ -779,7 +781,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
 
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 16),
 
                   // Uppercase Date String (e.g. THURSDAY, SEPTEMBER 17)
                   Text(
@@ -797,14 +799,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   RichText(
                     text: TextSpan(
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 25,
+                        fontSize: 26,
                         color: const Color(0xFF13261B),
                         letterSpacing: -0.5,
                       ),
                       children: [
                         TextSpan(
                           text: _greetingPrefix(),
-                          style: const TextStyle(fontWeight: FontWeight.w700),
+                          style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                         TextSpan(
                           text: '${_firstName()}!',
@@ -813,124 +815,104 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
+                ],
+              ),
+            ),
+          ),
 
-                  const Spacer(),
+          // 3. Full-Bodied 3D Owl Bird Mascot standing flush at bottom-left of Scenic Header
+          Positioned(
+            left: 8,
+            bottom: -4,
+            child: GestureDetector(
+              onTap: _showTalkToDoseDaySheet,
+              child: TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0.94, end: 1.0),
+                duration: const Duration(milliseconds: 650),
+                curve: Curves.easeOutBack,
+                builder: (_, scale, child) => Transform.scale(
+                  scale: scale,
+                  alignment: Alignment.bottomCenter,
+                  child: child,
+                ),
+                child: SizedBox(
+                  width: 138,
+                  height: 158,
+                  child: Image.asset(
+                    'assets/images/mascot_3d_bird.png',
+                    fit: BoxFit.contain,
+                    alignment: Alignment.bottomCenter,
+                    errorBuilder: (_, _, _) => Image.asset(
+                      'assets/images/app_logo.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
 
-                  // Mascot (Left) + Speech Bubble Card (Right)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+          // 4. White Speech Bubble Card on the right of the 3D Bird Mascot
+          Positioned(
+            left: 138,
+            right: 18,
+            bottom: 18,
+            child: GestureDetector(
+              onTap: overdueCount > 0
+                  ? widget.onOpenSchedule
+                  : (_refillCount > 0
+                      ? widget.onOpenMedications
+                      : _showTalkToDoseDaySheet),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  // Left Speech Tail Triangle pointing at the 3D Bird
+                  Positioned(
+                    left: -9,
+                    bottom: 22,
+                    child: CustomPaint(
+                      size: const Size(12, 16),
+                      painter: _SpeechTailPainter(),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(22),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF18281F).withValues(alpha: 0.10),
+                          blurRadius: 18,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Cute Mascot Character on the Left
-                        GestureDetector(
-                          onTap: _showTalkToDoseDaySheet,
-                          child: SizedBox(
-                            width: 104,
-                            height: 108,
-                            child: Stack(
-                              alignment: Alignment.bottomCenter,
-                              children: [
-                                Container(
-                                  width: 96,
-                                  height: 96,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white.withValues(alpha: 0.55),
-                                    border: Border.all(
-                                      color: Colors.white.withValues(alpha: 0.85),
-                                      width: 2,
-                                    ),
-                                  ),
-                                ),
-                                ClipOval(
-                                  child: Image.asset(
-                                    'assets/images/app_logo.png',
-                                    width: 96,
-                                    height: 96,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ],
-                            ),
+                        Text(
+                          'DoseDay',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.primary,
                           ),
                         ),
-                        const SizedBox(width: 8),
-
-                        // Speech Bubble with Left Tail pointing to Mascot
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: overdueCount > 0
-                                ? widget.onOpenSchedule
-                                : (_refillCount > 0
-                                    ? widget.onOpenMedications
-                                    : _showTalkToDoseDaySheet),
-                            child: Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                // Left Speech Tail Triangle
-                                Positioned(
-                                  left: -8,
-                                  bottom: 22,
-                                  child: CustomPaint(
-                                    size: const Size(12, 16),
-                                    painter: _SpeechTailPainter(),
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 14,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: const Color(0xFF18281F).withValues(alpha: 0.08),
-                                        blurRadius: 16,
-                                        offset: const Offset(0, 6),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'DoseDay',
-                                            style: GoogleFonts.plusJakartaSans(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w800,
-                                              color: AppColors.primary,
-                                            ),
-                                          ),
-                                          const Spacer(),
-                                          const Icon(
-                                            Icons.auto_awesome_rounded,
-                                            size: 14,
-                                            color: AppColors.primaryLight,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        assistantMessage,
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 12.5,
-                                          height: 1.38,
-                                          fontWeight: FontWeight.w500,
-                                          color: const Color(0xFF4A5950),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                        const SizedBox(height: 4),
+                        Text(
+                          assistantMessage,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 12.5,
+                            height: 1.38,
+                            fontWeight: FontWeight.w500,
+                            color: const Color(0xFF4A5950),
                           ),
                         ),
                       ],

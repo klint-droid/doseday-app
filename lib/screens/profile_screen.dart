@@ -67,6 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     String selectedGoal = profile.healthGoal;
 
     final avatarOptions = [
+      'assets/images/mascot_3d_bird.png',
       'assets/images/user_avatar.png',
       'assets/images/app_logo.png',
       'assets/images/onboarding_hero.png',

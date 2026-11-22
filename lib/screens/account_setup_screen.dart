@@ -18,13 +18,14 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
   final _emailController = TextEditingController(text: 'livia.vaccaro@example.com');
   final _emergencyController = TextEditingController();
 
-  String _selectedAvatar = 'assets/images/user_avatar.png';
+  String _selectedAvatar = 'assets/images/mascot_3d_bird.png';
   String _selectedGoal = 'Never miss a daily dose';
   TimeOfDay _wakeTime = const TimeOfDay(hour: 8, minute: 0);
   TimeOfDay _bedtime = const TimeOfDay(hour: 22, minute: 0);
   bool _saving = false;
 
   final List<String> _avatarOptions = [
+    'assets/images/mascot_3d_bird.png',
     'assets/images/user_avatar.png',
     'assets/images/app_logo.png',
     'assets/images/onboarding_hero.png',
