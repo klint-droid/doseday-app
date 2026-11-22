@@ -248,7 +248,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final profile = _profile!;
     final taken = _logs.where((l) => l.status == DoseStatus.taken).length;
     final total = _logs.length;
-    final adherenceRate = total == 0 ? 1.0 : (taken / total);
+    final adherenceRate = total == 0 ? 0.0 : (taken / total);
+    final streakDays = _logs.isEmpty ? 0 : taken;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -348,7 +349,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   const SizedBox(height: 14),
                   Text(
-                    profile.name,
+                    profile.name.isEmpty ? 'Your Profile' : profile.name,
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w900,
@@ -357,7 +358,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    profile.email,
+                    profile.email.isEmpty ? 'Tap edit to set your name & email' : profile.email,
                     style: const TextStyle(
                       fontSize: 13,
                       color: AppColors.textMuted,
@@ -452,9 +453,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         const Icon(Icons.local_fire_department_rounded, color: AppColors.pinkColor, size: 26),
                         const SizedBox(height: 8),
-                        const Text(
-                          '7 Days',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppColors.text),
+                        Text(
+                          '$streakDays Days',
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppColors.text),
                         ),
                         const SizedBox(height: 2),
                         const Text(

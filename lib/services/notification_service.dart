@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -15,15 +16,21 @@ class NotificationService {
 
   final FlutterLocalNotificationsPlugin _plugin = FlutterLocalNotificationsPlugin();
   bool _ready = false;
+  Timer? _foregroundMonitorTimer;
+  final Set<String> _firedForegroundKeys = <String>{};
 
   /// Notifier triggered whenever the user taps a notification or action in the system shade
   final ValueNotifier<String?> onNotificationTapped = ValueNotifier<String?>(null);
 
-  static const _channelId = 'doseday_medication_alerts_v6';
+  static const _channelId = 'doseday_medication_alerts_v7';
   static const _channelName = 'DoseDay Medication Reminders';
   static const _channelDesc = 'High-priority audible & interactive alerts for scheduled medication doses';
 
-  static const _silentChannelId = 'doseday_medication_silent_v6';
+  static const _fallbackChannelId = 'doseday_medication_default_v7';
+  static const _fallbackChannelName = 'DoseDay Default Sound Reminders';
+  static const _fallbackChannelDesc = 'High-priority system sound alerts for scheduled medication doses';
+
+  static const _silentChannelId = 'doseday_medication_silent_v7';
   static const _silentChannelName = 'DoseDay Silent Medication Reminders';
   static const _silentChannelDesc = 'Silent or vibration-only alerts for scheduled medication doses';
 
@@ -34,6 +41,7 @@ class NotificationService {
 
   Future<NotificationDetails> _buildDetails({
     bool includeActions = true,
+    bool useCustomSound = true,
     bool? overrideSound,
     bool? overrideVibration,
   }) async {
@@ -68,19 +76,31 @@ class NotificationService {
           ]
         : null;
 
+    final String activeChannelId = !playSound
+        ? _silentChannelId
+        : (useCustomSound ? _channelId : _fallbackChannelId);
+    final String activeChannelName = !playSound
+        ? _silentChannelName
+        : (useCustomSound ? _channelName : _fallbackChannelName);
+    final String activeChannelDesc = !playSound
+        ? _silentChannelDesc
+        : (useCustomSound ? _channelDesc : _fallbackChannelDesc);
+
     return NotificationDetails(
       android: AndroidNotificationDetails(
-        playSound ? _channelId : _silentChannelId,
-        playSound ? _channelName : _silentChannelName,
-        channelDescription: playSound ? _channelDesc : _silentChannelDesc,
+        activeChannelId,
+        activeChannelName,
+        channelDescription: activeChannelDesc,
         importance: Importance.max,
-        priority: Priority.high,
+        priority: Priority.max,
         category: AndroidNotificationCategory.alarm,
         audioAttributesUsage: AudioAttributesUsage.alarm,
         enableVibration: enableVibration,
         vibrationPattern: enableVibration ? Int64List.fromList([0, 500, 250, 500]) : null,
         playSound: playSound,
-        sound: playSound ? const RawResourceAndroidNotificationSound('reminder_sound') : null,
+        sound: (playSound && useCustomSound)
+            ? const RawResourceAndroidNotificationSound('reminder_sound')
+            : null,
         channelShowBadge: true,
         icon: '@mipmap/ic_launcher',
         fullScreenIntent: true,
@@ -91,14 +111,20 @@ class NotificationService {
         presentAlert: true,
         presentBadge: true,
         presentSound: playSound,
-        sound: playSound ? 'reminder_sound.wav' : null,
+        sound: (playSound && useCustomSound) ? 'reminder_sound.wav' : null,
       ),
     );
   }
 
-  /// Sets up time zones and the plugin. Permissions are requested separately
-  /// (after the first frame) so the app UI is visible behind the prompt.
+  Future<void> _ensureInitialized() async {
+    if (!_ready) {
+      await initialize();
+    }
+  }
+
+  /// Sets up time zones, channels, and foreground monitor.
   Future<void> initialize() async {
+    if (_ready) return;
     try {
       tzdata.initializeTimeZones();
       try {
@@ -127,60 +153,178 @@ class NotificationService {
         onDidReceiveNotificationResponse: _handleNotificationResponse,
       );
 
+      _ready = true;
+
       // Create high-priority Android notification channels
       final androidPlugin =
           _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
       if (androidPlugin != null) {
-        for (final oldId in [
-          'medication_reminders',
-          'medication_reminders_sound_v1',
-          'medication_reminders_sound_v2',
-          'medication_reminders_alarm_v2',
-          'medication_reminders_alarm_v3',
-          'medication_reminders_alarm_v4',
-          'doseday_medication_alerts_v5',
-        ]) {
-          try {
-            await androidPlugin.deleteNotificationChannel(oldId);
-          } catch (_) {}
+        try {
+          final audibleChannel = AndroidNotificationChannel(
+            _channelId,
+            _channelName,
+            description: _channelDesc,
+            importance: Importance.max,
+            playSound: true,
+            enableVibration: true,
+            vibrationPattern: Int64List.fromList([0, 500, 250, 500]),
+            sound: const RawResourceAndroidNotificationSound('reminder_sound'),
+            audioAttributesUsage: AudioAttributesUsage.alarm,
+          );
+          await androidPlugin.createNotificationChannel(audibleChannel);
+        } catch (e) {
+          debugPrint('Custom sound channel error: $e');
         }
 
-        final audibleChannel = AndroidNotificationChannel(
-          _channelId,
-          _channelName,
-          description: _channelDesc,
-          importance: Importance.max,
-          playSound: true,
-          enableVibration: true,
-          vibrationPattern: Int64List.fromList([0, 500, 250, 500]),
-          sound: const RawResourceAndroidNotificationSound('reminder_sound'),
-          audioAttributesUsage: AudioAttributesUsage.alarm,
-        );
-        await androidPlugin.createNotificationChannel(audibleChannel);
+        try {
+          final fallbackChannel = AndroidNotificationChannel(
+            _fallbackChannelId,
+            _fallbackChannelName,
+            description: _fallbackChannelDesc,
+            importance: Importance.max,
+            playSound: true,
+            enableVibration: true,
+            vibrationPattern: Int64List.fromList([0, 500, 250, 500]),
+            audioAttributesUsage: AudioAttributesUsage.alarm,
+          );
+          await androidPlugin.createNotificationChannel(fallbackChannel);
+        } catch (_) {}
 
-        const silentChannel = AndroidNotificationChannel(
-          _silentChannelId,
-          _silentChannelName,
-          description: _silentChannelDesc,
-          importance: Importance.high,
-          playSound: false,
-          enableVibration: true,
-        );
-        await androidPlugin.createNotificationChannel(silentChannel);
+        try {
+          const silentChannel = AndroidNotificationChannel(
+            _silentChannelId,
+            _silentChannelName,
+            description: _silentChannelDesc,
+            importance: Importance.high,
+            playSound: false,
+            enableVibration: true,
+          );
+          await androidPlugin.createNotificationChannel(silentChannel);
+        } catch (_) {}
       }
 
       // Check if app was opened by tapping a notification
-      final launchDetails = await _plugin.getNotificationAppLaunchDetails();
-      if (launchDetails != null && launchDetails.didNotificationLaunchApp) {
-        final response = launchDetails.notificationResponse;
-        if (response != null) {
-          await _handleNotificationResponse(response);
+      try {
+        final launchDetails = await _plugin.getNotificationAppLaunchDetails();
+        if (launchDetails != null && launchDetails.didNotificationLaunchApp) {
+          final response = launchDetails.notificationResponse;
+          if (response != null) {
+            await _handleNotificationResponse(response);
+          }
+        }
+      } catch (_) {}
+
+      _startForegroundAlarmMonitor();
+    } catch (e) {
+      debugPrint('Notifications initialization error: $e');
+    }
+  }
+
+  /// Periodically checks every 10 seconds while the app is running so that any
+  /// due dose triggers reliably even on devices that restrict background alarms.
+  void _startForegroundAlarmMonitor() {
+    _foregroundMonitorTimer?.cancel();
+    _foregroundMonitorTimer = Timer.periodic(const Duration(seconds: 10), (_) async {
+      try {
+        final now = DateTime.now();
+        final todayStr = dateKey(now);
+        final currentHm = timeKey(now);
+        final meds = await DatabaseService.instance.getMedications(activeOnly: true);
+        if (meds.isEmpty) return;
+        final logs = await DatabaseService.instance.getLogsForDate(todayStr);
+
+        for (final med in meds) {
+          if (med.id == null || !med.isScheduledOn(todayStr)) continue;
+          for (var i = 0; i < med.times.length; i++) {
+            final t = med.times[i];
+            if (t == currentHm) {
+              final fireKey = '$todayStr-${med.id}-$t';
+              if (_firedForegroundKeys.contains(fireKey)) continue;
+              _firedForegroundKeys.add(fireKey);
+
+              final alreadyLogged = logs.any(
+                (l) => l.medicationId == med.id && l.scheduledTime == t,
+              );
+              if (!alreadyLogged) {
+                final notifId = _idFor(med.id!, 0, i);
+                await _safeShow(
+                  id: notifId,
+                  title: '💊 Time for ${med.name}',
+                  body:
+                      '${med.doseLabel}${med.instructions.isNotEmpty ? ' • ${med.instructions}' : ''} (${formatTime(t)})',
+                  payload: '${med.id}|$t|$todayStr',
+                );
+              }
+            }
+          }
+        }
+      } catch (_) {}
+    });
+  }
+
+  Future<void> _safeShow({
+    required int id,
+    required String title,
+    required String body,
+    required String payload,
+    bool includeActions = true,
+  }) async {
+    await _ensureInitialized();
+    try {
+      final details = await _buildDetails(
+        includeActions: includeActions,
+        useCustomSound: true,
+      );
+      await _plugin.show(id, title, body, details, payload: payload);
+    } catch (e) {
+      debugPrint('Custom sound show failed ($e), falling back to default sound:');
+      try {
+        final fallbackDetails = await _buildDetails(
+          includeActions: includeActions,
+          useCustomSound: false,
+        );
+        await _plugin.show(id, title, body, fallbackDetails, payload: payload);
+      } catch (e2) {
+        debugPrint('Fallback show failed: $e2');
+      }
+    }
+  }
+
+  Future<void> _safeZonedSchedule({
+    required int id,
+    required String title,
+    required String body,
+    required tz.TZDateTime scheduledTime,
+    required String payload,
+    bool includeActions = true,
+  }) async {
+    await _ensureInitialized();
+
+    for (final useCustomSound in [true, false]) {
+      final details = await _buildDetails(
+        includeActions: includeActions,
+        useCustomSound: useCustomSound,
+      );
+      for (final mode in [
+        AndroidScheduleMode.alarmClock,
+        AndroidScheduleMode.exactAllowWhileIdle,
+        AndroidScheduleMode.inexactAllowWhileIdle,
+      ]) {
+        try {
+          await _plugin.zonedSchedule(
+            id,
+            title,
+            body,
+            scheduledTime,
+            details,
+            androidScheduleMode: mode,
+            payload: payload,
+          );
+          return; // Successfully scheduled!
+        } catch (e) {
+          debugPrint('zonedSchedule failed (customSound=$useCustomSound, mode=$mode): $e');
         }
       }
-
-      _ready = true;
-    } catch (e) {
-      debugPrint('Notifications unavailable: $e');
     }
   }
 
@@ -189,7 +333,6 @@ class NotificationService {
     final actionId = response.actionId;
     debugPrint('Notification response: action=$actionId payload=$payload');
 
-    // Parse payload format: "medicationId|HH:mm|yyyy-MM-dd"
     final parts = payload.split('|');
     if (parts.length >= 3) {
       final medId = int.tryParse(parts[0]);
@@ -236,7 +379,7 @@ class NotificationService {
   }
 
   Future<bool> areNotificationsEnabled() async {
-    if (!_ready) return false;
+    await _ensureInitialized();
     try {
       final android =
           _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
@@ -251,7 +394,7 @@ class NotificationService {
   }
 
   Future<bool> canScheduleExactAlarms() async {
-    if (!_ready) return false;
+    await _ensureInitialized();
     try {
       final android =
           _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
@@ -266,7 +409,7 @@ class NotificationService {
   }
 
   Future<int> getPendingNotificationCount() async {
-    if (!_ready) return 0;
+    await _ensureInitialized();
     try {
       final pending = await _plugin.pendingNotificationRequests();
       return pending.length;
@@ -276,12 +419,16 @@ class NotificationService {
   }
 
   Future<bool> requestPermissions() async {
-    if (!_ready) return false;
+    await _ensureInitialized();
     bool? granted;
     final android =
         _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
     if (android != null) {
-      granted = await android.requestNotificationsPermission();
+      try {
+        granted = await android.requestNotificationsPermission();
+      } catch (e) {
+        debugPrint('requestNotificationsPermission error: $e');
+      }
       try {
         final canExact = await android.canScheduleExactNotifications();
         if (canExact == false) {
@@ -295,19 +442,25 @@ class NotificationService {
     if (ios != null) {
       granted = await ios.requestPermissions(alert: true, badge: true, sound: true);
     }
-    return granted ?? false;
+    return granted ?? (await areNotificationsEnabled());
   }
 
   /// Schedules exact alarms for each active medication dose over the next 14 days.
   Future<void> scheduleMedication(Medication medication) async {
-    if (!_ready || medication.id == null) return;
+    await _ensureInitialized();
+    if (medication.id == null) return;
+
+    final enabled = await areNotificationsEnabled();
+    if (!enabled) {
+      await requestPermissions();
+    }
+
     await cancelMedication(medication.id!);
     if (!medication.isActive) return;
 
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final tzNow = tz.TZDateTime.now(tz.local);
-    final details = await _buildDetails(includeActions: true);
 
     for (var dayOffset = 0; dayOffset < 14; dayOffset++) {
       final targetDate = today.add(Duration(days: dayOffset));
@@ -321,8 +474,7 @@ class NotificationService {
         final hm = parseTime(medication.times[timeIndex]);
         if (hm == null) continue;
 
-        final scheduledTime = tz.TZDateTime(
-          tz.local,
+        final localTarget = DateTime(
           targetDate.year,
           targetDate.month,
           targetDate.day,
@@ -330,7 +482,18 @@ class NotificationService {
           hm.$2,
         );
 
-        if (!scheduledTime.isAfter(tzNow)) continue;
+        final diffSeconds = localTarget.difference(now).inSeconds;
+
+        tz.TZDateTime scheduledTime;
+        if (diffSeconds > 0) {
+          scheduledTime = tzNow.add(Duration(seconds: diffSeconds));
+        } else if (dayOffset == 0 && diffSeconds >= -60) {
+          // User scheduled a dose for the current minute! Fire in 3 seconds.
+          scheduledTime = tzNow.add(const Duration(seconds: 3));
+        } else {
+          // Dose time is already in the past for today
+          continue;
+        }
 
         final notificationId = _idFor(medication.id!, dayOffset, timeIndex);
         final title = '💊 Time for ${medication.name}';
@@ -338,31 +501,14 @@ class NotificationService {
             '${medication.doseLabel}${medication.instructions.isNotEmpty ? ' • ${medication.instructions}' : ''} (${formatTime(medication.times[timeIndex])})';
         final payload = '${medication.id}|${medication.times[timeIndex]}|$dayStr';
 
-        try {
-          await _plugin.zonedSchedule(
-            notificationId,
-            title,
-            body,
-            scheduledTime,
-            details,
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-            payload: payload,
-          );
-        } catch (e) {
-          try {
-            await _plugin.zonedSchedule(
-              notificationId,
-              title,
-              body,
-              scheduledTime,
-              details,
-              androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-              payload: payload,
-            );
-          } catch (e2) {
-            debugPrint('Failed to schedule alarm: $e2');
-          }
-        }
+        await _safeZonedSchedule(
+          id: notificationId,
+          title: title,
+          body: body,
+          scheduledTime: scheduledTime,
+          payload: payload,
+          includeActions: true,
+        );
       }
     }
   }
@@ -373,61 +519,45 @@ class NotificationService {
     String originalTime, {
     int minutes = 10,
   }) async {
-    if (!_ready) return;
+    await _ensureInitialized();
     final tzNow = tz.TZDateTime.now(tz.local);
     final snoozeTarget = tzNow.add(Duration(minutes: minutes));
     final todayStr = dateKey(DateTime.now());
     final snoozeId = 900000 + ((medication.id ?? 1) % 9000) * 10 + (minutes % 10);
-    final details = await _buildDetails(includeActions: true);
     final payload = '${medication.id ?? 0}|$originalTime|$todayStr';
 
-    try {
-      await _plugin.zonedSchedule(
-        snoozeId,
-        '⏰ Snoozed: ${medication.name}',
-        'Reminder snoozed for $minutes min • Take ${medication.doseLabel}',
-        snoozeTarget,
-        details,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        payload: payload,
-      );
-    } catch (_) {
-      try {
-        await _plugin.zonedSchedule(
-          snoozeId,
-          '⏰ Snoozed: ${medication.name}',
-          'Reminder snoozed for $minutes min • Take ${medication.doseLabel}',
-          snoozeTarget,
-          details,
-          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-          payload: payload,
-        );
-      } catch (_) {}
-    }
+    await _safeZonedSchedule(
+      id: snoozeId,
+      title: '⏰ Snoozed: ${medication.name}',
+      body: 'Reminder snoozed for $minutes min • Take ${medication.doseLabel}',
+      scheduledTime: snoozeTarget,
+      payload: payload,
+      includeActions: true,
+    );
   }
 
   /// Checks if a medication's remaining stock is at or below its refill threshold
   /// and fires a proactive refill notification.
   Future<void> checkAndNotifyLowStock(int medicationId) async {
-    if (!_ready) return;
+    await _ensureInitialized();
     try {
       final meds = await DatabaseService.instance.getMedications(activeOnly: true);
       final med = meds.where((m) => m.id == medicationId).firstOrNull;
       if (med != null && med.needsRefill) {
-        final details = await _buildDetails(includeActions: false);
-        await _plugin.show(
-          880000 + (med.id! % 10000),
-          '📦 Low Stock Alert: ${med.name}',
-          'Only ${med.stockQuantity} ${med.dosageUnit} left (refill threshold: ${med.refillThreshold}). Tap to restock soon!',
-          details,
+        await _safeShow(
+          id: 880000 + (med.id! % 10000),
+          title: '📦 Low Stock Alert: ${med.name}',
+          body:
+              'Only ${med.stockQuantity} ${med.dosageUnit} left (refill threshold: ${med.refillThreshold}). Tap to restock soon!',
           payload: 'refill|${med.id}',
+          includeActions: false,
         );
       }
     } catch (_) {}
   }
 
   Future<void> rescheduleAll(List<Medication> medications) async {
-    if (!_ready) return;
+    await _ensureInitialized();
     await _plugin.cancelAll();
     for (final m in medications) {
       await scheduleMedication(m);
@@ -435,7 +565,7 @@ class NotificationService {
   }
 
   Future<void> cancelMedication(int medicationId) async {
-    if (!_ready) return;
+    await _ensureInitialized();
     final prefix = (medicationId % 1000) * 1000;
     for (var d = 0; d < 20; d++) {
       for (var t = 0; t < 10; t++) {
@@ -445,50 +575,36 @@ class NotificationService {
   }
 
   Future<void> cancelAll() async {
-    if (_ready) await _plugin.cancelAll();
+    await _ensureInitialized();
+    await _plugin.cancelAll();
   }
 
   Future<void> showTest() async {
-    if (!_ready) return;
+    await _ensureInitialized();
     await requestPermissions();
-    final details = await _buildDetails(includeActions: true);
-    await _plugin.show(
-      0,
-      '💊 DoseDay Smart Reminder',
-      'Audible chime, vibration & quick actions (Take / Snooze / Skip) are active!',
-      details,
+    await _safeShow(
+      id: 0,
+      title: '💊 DoseDay Smart Reminder',
+      body: 'Audible chime, vibration & quick actions (Take / Snooze / Skip) are active!',
       payload: 'test_notification',
+      includeActions: true,
     );
   }
 
   /// Schedules an exact alarm 5 seconds in the future so the user can lock
   /// their screen or close the app and verify background alarm delivery.
   Future<void> scheduleDelayedTest({int seconds = 5}) async {
-    if (!_ready) return;
+    await _ensureInitialized();
     await requestPermissions();
-    final details = await _buildDetails(includeActions: true);
     final target = tz.TZDateTime.now(tz.local).add(Duration(seconds: seconds));
-    try {
-      await _plugin.zonedSchedule(
-        999991,
-        '🔔 Closed-App Exact Alarm Test',
-        'Success! Your device woke up on time after $seconds seconds.',
-        target,
-        details,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        payload: 'test_delayed_alarm',
-      );
-    } catch (_) {
-      await _plugin.zonedSchedule(
-        999991,
-        '🔔 Closed-App Exact Alarm Test',
-        'Success! Your device triggered the scheduled alarm after $seconds seconds.',
-        target,
-        details,
-        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-        payload: 'test_delayed_alarm',
-      );
-    }
+    await _safeZonedSchedule(
+      id: 999991,
+      title: '🔔 Closed-App Exact Alarm Test',
+      body: 'Success! Your device woke up on time after $seconds seconds.',
+      scheduledTime: target,
+      payload: 'test_delayed_alarm',
+      includeActions: true,
+    );
   }
 
   int _idFor(int medicationId, int dayOffset, int timeIndex) =>

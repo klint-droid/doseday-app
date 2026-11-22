@@ -62,47 +62,6 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
     if (saved != null && mounted) _toast('${saved.name} added to cabinet');
   }
 
-  Future<void> _seedSampleMedications() async {
-    final today = dateKey(DateTime.now());
-    final samples = [
-      Medication(
-        name: 'Amoxicillin 500mg',
-        dosage: '1',
-        dosageUnit: 'capsule(s)',
-        instructions: 'Take after breakfast & dinner',
-        startDate: today,
-        stockQuantity: 14,
-        refillThreshold: 5,
-        times: ['08:00', '20:00'],
-      ),
-      Medication(
-        name: 'Vitamin D3 + K2',
-        dosage: '1',
-        dosageUnit: 'tablet(s)',
-        instructions: 'Take with morning meal',
-        startDate: today,
-        stockQuantity: 45,
-        refillThreshold: 10,
-        times: ['09:00'],
-      ),
-      Medication(
-        name: 'Losartan Potassium 50mg',
-        dosage: '1',
-        dosageUnit: 'tablet(s)',
-        instructions: 'Evening blood pressure maintenance',
-        startDate: today,
-        stockQuantity: 4,
-        refillThreshold: 5,
-        times: ['19:00'],
-      ),
-    ];
-    for (final m in samples) {
-      final saved = await _db.saveMedication(m);
-      await NotificationService.instance.scheduleMedication(saved);
-    }
-    if (mounted) _toast('Loaded 3 sample medications with active alarms');
-  }
-
   Future<void> _toggleActive(Medication med) async {
     if (med.id == null) return;
     final active = !med.isActive;
@@ -395,7 +354,7 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Add your first daily prescription or load a sample routine to explore stock tracking & exact alarms.',
+                      'Tap below to add your first medication reminder and start tracking your stock & alarms.',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.plusJakartaSans(
                         fontSize: 13,
@@ -403,35 +362,13 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: FilledButton.icon(
-                            onPressed: _addNew,
-                            icon: const Icon(Icons.add_rounded, size: 18),
-                            label: const Text('Add Medicine'),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: _seedSampleMedications,
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: AppColors.primary,
-                              side: const BorderSide(color: AppColors.primary),
-                              padding: const EdgeInsets.symmetric(vertical: 13),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                            icon: const Icon(Icons.auto_awesome_rounded, size: 17),
-                            label: const Text(
-                              'Load Samples',
-                              style: TextStyle(fontWeight: FontWeight.w800),
-                            ),
-                          ),
-                        ),
-                      ],
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        onPressed: _addNew,
+                        icon: const Icon(Icons.add_rounded, size: 18),
+                        label: const Text('Add First Medicine'),
+                      ),
                     ),
                   ],
                 ),

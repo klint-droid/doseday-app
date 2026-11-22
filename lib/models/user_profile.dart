@@ -13,9 +13,9 @@ class UserProfile {
 
   const UserProfile({
     this.id = 1,
-    this.name = 'Olivia Vaccaro',
-    this.email = 'olivia.vaccaro@example.com',
-    this.avatarPath = 'assets/images/user_avatar.png',
+    this.name = '',
+    this.email = '',
+    this.avatarPath = 'assets/images/mascot_3d_bird.png',
     this.healthGoal = 'Never miss a daily dose',
     this.wakeTime = '08:00 AM',
     this.bedtime = '10:00 PM',
@@ -69,9 +69,9 @@ class UserProfile {
 
   factory UserProfile.fromMap(Map<String, dynamic> map) => UserProfile(
         id: map['id'] as int? ?? 1,
-        name: map['name'] as String? ?? 'Livia Vaccaro',
-        email: map['email'] as String? ?? 'livia.vaccaro@example.com',
-        avatarPath: map['avatar_path'] as String? ?? 'assets/images/user_avatar.png',
+        name: map['name'] as String? ?? '',
+        email: map['email'] as String? ?? '',
+        avatarPath: map['avatar_path'] as String? ?? 'assets/images/mascot_3d_bird.png',
         healthGoal: map['health_goal'] as String? ?? 'Never miss a daily dose',
         wakeTime: map['wake_time'] as String? ?? '08:00 AM',
         bedtime: map['bedtime'] as String? ?? '10:00 PM',

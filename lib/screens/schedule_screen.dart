@@ -668,135 +668,61 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   }
 
   Widget _buildDemoTasksList({required bool isToday, required String nowTime}) {
-    final demoDoses = [
-      (
-        category: 'Take after breakfast • Antibiotic course',
-        title: 'Amoxicillin 500mg',
-        time: '08:00 AM',
-        status: 'done',
-        label: 'Taken ✓',
-        icon: Icons.medication_rounded,
-        bg: AppColors.primaryContainer,
-        color: AppColors.primary,
-      ),
-      (
-        category: 'Daily morning supplement • With meal',
-        title: 'Vitamin D3 + K2 (2000 IU)',
-        time: '12:00 PM',
-        status: 'in_progress',
-        label: 'Due Now',
-        icon: Icons.wb_sunny_rounded,
-        bg: AppColors.peachBg,
-        color: AppColors.peachColor,
-      ),
-      (
-        category: 'Blood pressure maintenance • Evening',
-        title: 'Losartan Potassium 50mg',
-        time: '07:00 PM',
-        status: 'todo',
-        label: 'Scheduled',
-        icon: Icons.favorite_outline_rounded,
-        bg: AppColors.pinkBg,
-        color: AppColors.pinkColor,
-      ),
-      (
-        category: 'Before bedtime • Heart & omega wellness',
-        title: 'Omega-3 Fish Oil 1000mg',
-        time: '09:00 PM',
-        status: 'todo',
-        label: 'Scheduled',
-        icon: Icons.nightlight_round,
-        bg: AppColors.blueBg,
-        color: AppColors.blueColor,
-      ),
-    ];
-
-    final filteredDemo = demoDoses.where((t) {
-      if (_selectedFilter == 'All') return true;
-      if (_selectedFilter == 'To do') return t.status == 'todo';
-      if (_selectedFilter == 'Due Now' || _selectedFilter == 'In Progress') {
-        return t.status == 'in_progress';
-      }
-      if (_selectedFilter == 'Completed' || _selectedFilter == 'Done') return t.status == 'done';
-      return true;
-    }).toList();
-
-    return ListView.builder(
-      padding: const EdgeInsets.fromLTRB(20, 6, 20, 110),
-      itemCount: filteredDemo.length,
-      itemBuilder: (_, i) {
-        final t = filteredDemo[i];
-        return AppCard(
-          margin: const EdgeInsets.only(bottom: 12),
-          radius: 20,
-          onTap: widget.onAddMedication,
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(28),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: AppColors.borderLight),
+          ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          t.category,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 12,
-                            color: AppColors.textMuted,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          t.title,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.text,
-                            decoration: t.status == 'done' ? TextDecoration.lineThrough : null,
-                            decorationColor: AppColors.textMuted,
-                            letterSpacing: -0.2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  PastelIconBadge(
-                    icon: t.icon,
-                    bg: t.bg,
-                    color: t.color,
-                    size: 36,
-                    radius: 11,
-                  ),
-                ],
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryContainer,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: const Icon(
+                  Icons.event_note_rounded,
+                  size: 28,
+                  color: AppColors.primary,
+                ),
               ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.access_time_rounded,
-                    size: 15,
-                    color: AppColors.textMuted,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    t.time,
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                  const Spacer(),
-                  FigmaStatusPill(label: t.label, status: t.status),
-                ],
+              const SizedBox(height: 14),
+              Text(
+                'No doses scheduled for this day',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.text,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Tap the + button below to add a medication and schedule your daily alarm times.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 13,
+                  color: AppColors.textMuted,
+                ),
+              ),
+              const SizedBox(height: 16),
+              FilledButton.icon(
+                onPressed: widget.onAddMedication,
+                icon: const Icon(Icons.add_rounded, size: 18),
+                label: const Text('Add Medication'),
               ),
             ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 

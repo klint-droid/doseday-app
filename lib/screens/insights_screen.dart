@@ -61,7 +61,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
     final skipped = _logs.where((l) => l.status == DoseStatus.skipped).length;
     final missed = _logs.where((l) => l.status == DoseStatus.missed).length;
     final recorded = taken + skipped + missed;
-    final rate = recorded == 0 ? 0.95 : taken / recorded;
+    final rate = recorded == 0 ? 0.0 : taken / recorded;
     final refill = meds.where((m) => m.isActive && m.needsRefill).length;
 
     return Scaffold(
@@ -140,7 +140,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
                           const SizedBox(height: 4),
                           Text(
                             recorded == 0
-                                ? 'You are on a 7-day wellness streak! Start logging doses to build your history.'
+                                ? 'No doses recorded yet. Add a medication and log your doses to build your adherence history.'
                                 : 'Based on $recorded logged doses ($taken taken, $skipped skipped, $missed missed).',
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 12,
@@ -163,7 +163,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
                   Expanded(
                     child: StatCard(
                       title: 'Doses Taken',
-                      value: '${recorded == 0 ? 21 : taken}',
+                      value: '$taken',
                       icon: Icons.check_circle_outline_rounded,
                       color: AppColors.primary,
                     ),
@@ -241,14 +241,14 @@ class _InsightsScreenState extends State<InsightsScreen> {
                 final dayLogs = _logs.where((l) => l.scheduledDate == key);
                 final total = dayLogs.length;
                 final t = dayLogs.where((l) => l.status == DoseStatus.taken).length;
-                final r = total == 0 ? 0.85 : t / total;
+                final r = total == 0 ? 0.0 : t / total;
                 final isToday = key == dateKey(now);
                 return Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        total == 0 ? '✓' : '$t/$total',
+                        total == 0 ? '0/0' : '$t/$total',
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 10.5,
                           fontWeight: FontWeight.w700,

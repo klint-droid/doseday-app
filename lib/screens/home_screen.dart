@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
       .firstOrNull;
 
   int _computeStreakDays() {
-    if (_allLogs.isEmpty) return 7; // Default showcase streak matching Tarsi photo
+    if (_allLogs.isEmpty) return 0;
     int streak = 0;
     final now = DateTime.now();
     for (int i = 0; i < 30; i++) {
@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       }
     }
-    return streak == 0 ? 7 : streak;
+    return streak;
   }
 
   String _greetingPrefix() {
@@ -108,8 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String _firstName() {
     final raw = _profile?.name.trim() ?? '';
-    if (raw.isEmpty || raw == 'Olivia Vaccaro' || raw == 'Livia Vaccaro') {
-      return 'Bryl';
+    if (raw.isEmpty) {
+      return 'there';
     }
     return raw.split(' ').first;
   }
@@ -508,10 +508,10 @@ class _HomeScreenState extends State<HomeScreen> {
         .toList();
     final pendingCount = totalCount - takenCount - skippedCount;
 
-    // Percentages for the Tarsi Donut Chart Card
-    final int takenPct = totalCount == 0 ? 95 : ((takenCount / totalCount) * 100).round();
-    final int pendingPct = totalCount == 0 ? 4 : ((pendingCount / totalCount) * 100).round();
-    final int skippedPct = totalCount == 0 ? 1 : (100 - takenPct - pendingPct).clamp(0, 100);
+    // Percentages for the Donut Chart Card (0% when empty)
+    final int takenPct = totalCount == 0 ? 0 : ((takenCount / totalCount) * 100).round();
+    final int pendingPct = totalCount == 0 ? 0 : ((pendingCount / totalCount) * 100).round();
+    final int skippedPct = totalCount == 0 ? 0 : (100 - takenPct - pendingPct).clamp(0, 100);
 
     final streakDays = _computeStreakDays();
 
@@ -597,7 +597,7 @@ class _HomeScreenState extends State<HomeScreen> {
           "You've completed $takenCount of $totalCount scheduled doses today. Tap here to review your daily timeline.";
     } else {
       assistantMessage =
-          "You're on a $streakDays-day health streak! Let's take a look at your upcoming medication schedule here.";
+          "Your medication schedule is empty. Tap the + button below or tap here to add your first reminder!";
     }
 
     return SizedBox(
@@ -1059,16 +1059,13 @@ class _HomeScreenState extends State<HomeScreen> {
     required int takenCount,
     required int totalCount,
   }) {
-    // Compute metrics for Day / Week / Month
-    final multiplier = _selectedPeriod == 'Day'
-        ? 1
+    // Compute metrics for Day / Week / Month (0 when empty)
+    final displayTaken = _selectedPeriod == 'Day'
+        ? takenCount
         : _selectedPeriod == 'Week'
-            ? 7
-            : 30;
-    final displayTaken = (totalCount == 0 ? 3 : takenCount) * multiplier;
-    final totalStock = _medications.isEmpty
-        ? 84
-        : _medications.fold<int>(0, (sum, m) => sum + m.stockQuantity);
+            ? _allLogs.where((l) => l.status == DoseStatus.taken).take(7).length
+            : _allLogs.where((l) => l.status == DoseStatus.taken).length;
+    final totalStock = _medications.fold<int>(0, (sum, m) => sum + m.stockQuantity);
     final periodTitle = _selectedPeriod == 'Day'
         ? 'Today'
         : _selectedPeriod == 'Week'
@@ -1357,8 +1354,8 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
     final currentMonth = monthsShort[now.month - 1];
 
-    final totalDosesDisplay = slots.isEmpty ? 4 : slots.length;
-    final remainingCount = slots.isEmpty ? 3 : (slots.length - takenCount).clamp(0, 99);
+    final totalDosesDisplay = slots.length;
+    final remainingCount = (slots.length - takenCount).clamp(0, 99);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1653,176 +1650,51 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// Showcase rows matching the exact visual hierarchy of BDO Mastercard / Globe postpaid / Netflix Premium in the Tarsi screenshot
+  /// Empty state when no medications are scheduled yet
   Widget _buildShowcaseDoseDueRows(DateTime now) {
-    final items = [
-      (
-        month: 'SEP',
-        day: '12',
-        isOverdue: true,
-        badgeColor: const Color(0xFF0056B3),
-        badgeIcon: Icons.medication_rounded,
-        pillText: '15 mins overdue',
-        title: 'Amoxicillin 500mg',
-        rightTop: '08:00 AM',
-        rightSub: '1 CAPSULE • DUE',
-      ),
-      (
-        month: 'SEP',
-        day: '19',
-        isOverdue: false,
-        badgeColor: const Color(0xFF2D6A4F),
-        badgeIcon: Icons.wb_sunny_rounded,
-        pillText: '2 hours left',
-        title: 'Vitamin D3 + K2',
-        rightTop: '12:00 PM',
-        rightSub: '1 SOFTGEL • DUE',
-      ),
-      (
-        month: 'SEP',
-        day: '22',
-        isOverdue: false,
-        badgeColor: const Color(0xFFD90429),
-        badgeIcon: Icons.favorite_rounded,
-        pillText: '5 hours left',
-        title: 'Losartan Potassium',
-        rightTop: '08:00 PM',
-        rightSub: '1 TABLET • DUE',
-      ),
-    ];
-
-    return Column(
-      children: [
-        for (int i = 0; i < items.length; i++) ...[
-          if (i > 0) const Divider(height: 1, color: AppColors.borderLight),
-          InkWell(
-            onTap: widget.onAddMedication,
-            borderRadius: BorderRadius.circular(16),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              child: Row(
-                children: [
-                  Container(
-                    width: 52,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      color: items[i].isOverdue
-                          ? AppColors.overdueBg
-                          : const Color(0xFFF4F6F5),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          items[i].month,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w800,
-                            color: items[i].isOverdue
-                                ? AppColors.overdueText
-                                : AppColors.textMuted,
-                          ),
-                        ),
-                        Text(
-                          items[i].day,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w900,
-                            color: items[i].isOverdue
-                                ? AppColors.overdueText
-                                : AppColors.text,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              width: 22,
-                              height: 22,
-                              decoration: BoxDecoration(
-                                color: items[i].badgeColor,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                items[i].badgeIcon,
-                                size: 13,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 9,
-                                vertical: 3.5,
-                              ),
-                              decoration: BoxDecoration(
-                                color: items[i].isOverdue
-                                    ? AppColors.overdueBg
-                                    : const Color(0xFFF1F4F2),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                items[i].pillText,
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w800,
-                                  color: items[i].isOverdue
-                                      ? AppColors.overdueText
-                                      : AppColors.textMuted,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          items[i].title,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 15.5,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.text,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        items[i].rightTop,
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 15.5,
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.text,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        items[i].rightSub,
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 0.4,
-                          color: AppColors.textMuted,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 12),
+      child: Column(
+        children: [
+          Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              color: AppColors.primaryContainer,
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: const Icon(
+              Icons.medication_outlined,
+              color: AppColors.primary,
+              size: 28,
             ),
           ),
+          const SizedBox(height: 12),
+          Text(
+            'No doses due today',
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+              color: AppColors.text,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Your schedule is empty. Tap + below to add your first medication reminder.',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 12.5,
+              color: AppColors.textMuted,
+            ),
+          ),
+          const SizedBox(height: 14),
+          FilledButton.icon(
+            onPressed: widget.onAddMedication,
+            icon: const Icon(Icons.add_rounded, size: 18),
+            label: const Text('Add First Medication'),
+          ),
         ],
-      ],
+      ),
     );
   }
 

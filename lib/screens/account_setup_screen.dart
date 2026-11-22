@@ -14,8 +14,8 @@ class AccountSetupScreen extends StatefulWidget {
 }
 
 class _AccountSetupScreenState extends State<AccountSetupScreen> {
-  final _nameController = TextEditingController(text: 'Livia Vaccaro');
-  final _emailController = TextEditingController(text: 'livia.vaccaro@example.com');
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _emergencyController = TextEditingController();
 
   String _selectedAvatar = 'assets/images/mascot_3d_bird.png';
@@ -130,8 +130,8 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
 
   Future<void> _saveAndProceed() async {
     setState(() => _saving = true);
-    final name = _nameController.text.trim().isEmpty ? 'Livia Vaccaro' : _nameController.text.trim();
-    final email = _emailController.text.trim().isEmpty ? 'user@doseday.app' : _emailController.text.trim();
+    final name = _nameController.text.trim();
+    final email = _emailController.text.trim();
 
     final profile = UserProfile(
       name: name,
