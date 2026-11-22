@@ -623,11 +623,11 @@
         </div>
 
         <div class="qr-card">
-          <div class="qr-canvas-wrap">
+          <a href="downloads/DoseDay.apk" download="DoseDay.apk" class="qr-canvas-wrap" id="qr-download-link" title="Scan or click to download DoseDay.apk">
             <canvas id="qr-canvas"></canvas>
-          </div>
+          </a>
           <div class="qr-card-title">Scan to Download APK</div>
-          <div class="qr-card-sub">Point your Android camera to install directly</div>
+          <div class="qr-card-sub" id="qr-target-label">Point your Android camera to install directly</div>
         </div>
       </div>
     </div>
@@ -717,6 +717,7 @@
     </div>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="app.js"></script>
 </body>
 </html>

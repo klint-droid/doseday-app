@@ -266,45 +266,291 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 9. QR Code Canvas Rendering
+  // 9. Real Scannable ISO/IEC 18004 QR Code Rendering for APK Download
   const qrCanvas = document.getElementById('qr-canvas');
   if (qrCanvas) {
-    const ctx = qrCanvas.getContext('2d');
-    const size = 156;
-    qrCanvas.width = size;
-    qrCanvas.height = size;
+    const isLocal =
+      window.location.protocol === 'file:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1';
 
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, size, size);
+    // Use live domain APK URL when deployed, or public GitHub Release/Raw APK URL when previewing on localhost
+    const apkDownloadUrl = isLocal
+      ? 'https://github.com/klint-droid/doseday-app/raw/main/website/downloads/DoseDay.apk'
+      : new URL('downloads/DoseDay.apk', window.location.href).href;
 
-    ctx.fillStyle = '#1B4332';
-    const matrix = [
-      [1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1],
-      [1,0,0,0,0,0,1,0,0,1,1,0,0,0,0,0,1],
-      [1,0,1,1,1,0,1,0,1,0,1,0,1,1,1,0,1],
-      [1,0,1,1,1,0,1,0,0,1,1,0,1,1,1,0,1],
-      [1,0,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1],
-      [1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1],
-      [1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1],
-      [0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0],
-      [1,1,0,1,0,1,1,1,0,1,0,1,0,1,1,0,1],
-      [0,0,1,0,1,0,0,1,1,0,1,0,1,0,0,1,0],
-      [1,1,1,1,1,1,1,0,1,1,1,0,1,1,0,1,1],
-      [1,0,0,0,0,0,1,0,0,1,0,1,0,0,1,0,1],
-      [1,0,1,1,1,0,1,0,1,0,1,0,1,1,0,1,0],
-      [1,0,1,1,1,0,1,0,0,1,0,1,1,0,1,1,1],
-      [1,0,1,1,1,0,1,0,1,1,1,0,0,1,0,0,1],
-      [1,0,0,0,0,0,1,0,0,0,1,1,1,0,1,0,1],
-      [1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,1,1]
+    const qrLink = document.getElementById('qr-download-link');
+    if (qrLink) {
+      qrLink.href = apkDownloadUrl;
+    }
+
+    const matrix = generateRealQrMatrix(apkDownloadUrl);
+    renderQrMatrixToCanvas(qrCanvas, matrix, '#1B4332');
+  }
+
+  /**
+   * Generates a real, scannable ISO/IEC 18004 QR Code matrix for `text`.
+   * Uses `window.qrcode` if loaded, or falls back to the built-in offline ISO/IEC 18004 Byte-mode encoder.
+   */
+  function generateRealQrMatrix(text) {
+    if (typeof window.qrcode === 'function') {
+      try {
+        const qr = window.qrcode(0, 'M');
+        qr.addData(text);
+        qr.make();
+        const count = qr.getModuleCount();
+        const mat = [];
+        for (let r = 0; r < count; r++) {
+          const row = [];
+          for (let c = 0; c < count; c++) {
+            row.push(qr.isDark(r, c) ? 1 : 0);
+          }
+          mat.push(row);
+        }
+        return mat;
+      } catch (_) {}
+    }
+    return encodeIsoQrByteMode(text);
+  }
+
+  /**
+   * Built-in 100% offline ISO/IEC 18004 QR Code encoder (Byte mode, ECC Level L, Versions 1-10)
+   */
+  function encodeIsoQrByteMode(str) {
+    const utf8 = new TextEncoder().encode(str);
+    // Version specs (ECC Level L): [totalDataBytes, ecBytesPerBlock, numBlocks, alignmentCenters]
+    const VERSIONS = [
+      null,
+      [19, 7, 1, []],
+      [34, 10, 1, [6, 18]],
+      [55, 15, 1, [6, 22]],
+      [80, 20, 1, [6, 26]],
+      [108, 26, 1, [6, 30]],
+      [136, 18, 2, [6, 34]],
+      [156, 20, 2, [6, 22, 38]],
+      [194, 24, 2, [6, 24, 42]],
+      [232, 30, 2, [6, 26, 46]],
+      [274, 18, 4, [6, 28, 50]]
     ];
 
-    const cellSize = size / matrix.length;
-    for (let r = 0; r < matrix.length; r++) {
-      for (let c = 0; c < matrix[r].length; c++) {
-        if (matrix[r][c] === 1) {
-          ctx.beginPath();
-          ctx.arc(c * cellSize + cellSize / 2, r * cellSize + cellSize / 2, cellSize / 2.2, 0, Math.PI * 2);
-          ctx.fill();
+    let ver = 1;
+    while (ver <= 10) {
+      const lenBits = ver <= 9 ? 8 : 16;
+      const capBytes = VERSIONS[ver][0];
+      if (4 + lenBits + utf8.length * 8 <= capBytes * 8) break;
+      ver++;
+    }
+    if (ver > 10) ver = 10;
+
+    const [totalData, ecPerBlock, numBlocks, alignPos] = VERSIONS[ver];
+    const bits = [];
+    const pushBits = (val, len) => {
+      for (let i = len - 1; i >= 0; i--) bits.push((val >>> i) & 1);
+    };
+
+    // Byte mode indicator (0100) + character count
+    pushBits(0b0100, 4);
+    pushBits(utf8.length, ver <= 9 ? 8 : 16);
+    for (let i = 0; i < utf8.length; i++) pushBits(utf8[i], 8);
+
+    // Terminator & byte padding
+    const maxBits = totalData * 8;
+    pushBits(0, Math.min(4, maxBits - bits.length));
+    while (bits.length % 8 !== 0) bits.push(0);
+
+    const dataBytes = [];
+    for (let i = 0; i < bits.length; i += 8) {
+      let b = 0;
+      for (let j = 0; j < 8; j++) b = (b << 1) | bits[i + j];
+      dataBytes.push(b);
+    }
+    let padToggle = true;
+    while (dataBytes.length < totalData) {
+      dataBytes.push(padToggle ? 0xEC : 0x11);
+      padToggle = !padToggle;
+    }
+
+    // GF(256) tables (primitive polynomial 0x11D)
+    const EXP = new Uint8Array(512);
+    const LOG = new Uint8Array(256);
+    let x = 1;
+    for (let i = 0; i < 255; i++) {
+      EXP[i] = x;
+      LOG[x] = i;
+      x <<= 1;
+      if (x & 0x100) x ^= 0x11D;
+    }
+    for (let i = 255; i < 512; i++) EXP[i] = EXP[i - 255];
+
+    const gfMul = (a, b) => (a === 0 || b === 0 ? 0 : EXP[LOG[a] + LOG[b]]);
+    const polyMul = (p, q) => {
+      const r = new Uint8Array(p.length + q.length - 1);
+      for (let i = 0; i < p.length; i++) {
+        for (let j = 0; j < q.length; j++) {
+          r[i + j] ^= gfMul(p[i], q[j]);
+        }
+      }
+      return r;
+    };
+
+    let gen = new Uint8Array([1]);
+    for (let i = 0; i < ecPerBlock; i++) {
+      gen = polyMul(gen, new Uint8Array([1, EXP[i]]));
+    }
+
+    const rsEncode = (msg) => {
+      const rem = new Uint8Array(msg.length + ecPerBlock);
+      rem.set(msg, 0);
+      for (let i = 0; i < msg.length; i++) {
+        const coef = rem[i];
+        if (coef !== 0) {
+          for (let j = 1; j < gen.length; j++) {
+            rem[i + j] ^= gfMul(gen[j], coef);
+          }
+        }
+      }
+      return rem.slice(msg.length);
+    };
+
+    // Split into blocks & compute Reed-Solomon EC
+    const blockSize = Math.floor(totalData / numBlocks);
+    const dataBlocks = [];
+    const ecBlocks = [];
+    let offset = 0;
+    for (let b = 0; b < numBlocks; b++) {
+      const blk = dataBytes.slice(offset, offset + blockSize);
+      offset += blockSize;
+      dataBlocks.push(blk);
+      ecBlocks.push(rsEncode(blk));
+    }
+
+    const finalCodewords = [];
+    for (let i = 0; i < blockSize; i++) {
+      for (let b = 0; b < numBlocks; b++) finalCodewords.push(dataBlocks[b][i]);
+    }
+    for (let i = 0; i < ecPerBlock; i++) {
+      for (let b = 0; b < numBlocks; b++) finalCodewords.push(ecBlocks[b][i]);
+    }
+
+    // Build QR Grid
+    const size = ver * 4 + 17;
+    const grid = Array.from({ length: size }, () => new Int8Array(size).fill(-1));
+    const isFunc = Array.from({ length: size }, () => new Uint8Array(size));
+
+    const setFunc = (r, c, val) => {
+      if (r >= 0 && r < size && c >= 0 && c < size) {
+        grid[r][c] = val ? 1 : 0;
+        isFunc[r][c] = 1;
+      }
+    };
+
+    const drawFinder = (r0, c0) => {
+      for (let dr = -1; dr <= 7; dr++) {
+        for (let dc = -1; dc <= 7; dc++) {
+          const inOuter = dr >= 0 && dr <= 6 && dc >= 0 && dc <= 6;
+          const onBorder = dr === 0 || dr === 6 || dc === 0 || dc === 6;
+          const inInner = dr >= 2 && dr <= 4 && dc >= 2 && dc <= 4;
+          setFunc(r0 + dr, c0 + dc, inOuter && (onBorder || inInner));
+        }
+      }
+    };
+
+    drawFinder(0, 0);
+    drawFinder(0, size - 7);
+    drawFinder(size - 7, 0);
+
+    // Alignment patterns
+    for (let i = 0; i < alignPos.length; i++) {
+      for (let j = 0; j < alignPos.length; j++) {
+        if ((i === 0 && j === 0) || (i === 0 && j === alignPos.length - 1) || (i === alignPos.length - 1 && j === 0)) {
+          continue;
+        }
+        const r0 = alignPos[i];
+        const c0 = alignPos[j];
+        for (let dr = -2; dr <= 2; dr++) {
+          for (let dc = -2; dc <= 2; dc++) {
+            setFunc(r0 + dr, c0 + dc, Math.max(Math.abs(dr), Math.abs(dc)) !== 1);
+          }
+        }
+      }
+    }
+
+    // Timing patterns
+    for (let i = 8; i < size - 8; i++) {
+      setFunc(6, i, i % 2 === 0);
+      setFunc(i, 6, i % 2 === 0);
+    }
+
+    // Dark module & reserved format areas
+    setFunc(size - 8, 8, true);
+    for (let i = 0; i < 9; i++) {
+      if (!isFunc[8][i]) setFunc(8, i, false);
+      if (!isFunc[i][8]) setFunc(i, 8, false);
+    }
+    for (let i = 0; i < 8; i++) {
+      if (!isFunc[8][size - 1 - i]) setFunc(8, size - 1 - i, false);
+      if (!isFunc[size - 1 - i][8]) setFunc(size - 1 - i, 8, false);
+    }
+
+    // Place data bits in upward/downward 2-column zig-zag
+    const stream = [];
+    for (let i = 0; i < finalCodewords.length; i++) {
+      for (let b = 7; b >= 0; b--) stream.push((finalCodewords[i] >>> b) & 1);
+    }
+
+    let bitIdx = 0;
+    let upward = true;
+    for (let right = size - 1; right >= 1; right -= 2) {
+      if (right === 6) right = 5;
+      for (let vert = 0; vert < size; vert++) {
+        const r = upward ? size - 1 - vert : vert;
+        for (let j = 0; j < 2; j++) {
+          const c = right - j;
+          if (!isFunc[r][c]) {
+            const bit = bitIdx < stream.length ? stream[bitIdx++] : 0;
+            // Apply Mask 0: (r + c) % 2 === 0
+            grid[r][c] = ((r + c) % 2 === 0) ? (bit ^ 1) : bit;
+          }
+        }
+      }
+      upward = !upward;
+    }
+
+    // Write Format Info for ECC Level L (01) + Mask 0 (000) -> 0x77C4
+    const fmtBits = 0x77C4;
+    for (let i = 0; i <= 5; i++) setFunc(8, i, ((fmtBits >>> i) & 1) === 1);
+    setFunc(8, 7, ((fmtBits >>> 6) & 1) === 1);
+    setFunc(8, 8, ((fmtBits >>> 7) & 1) === 1);
+    setFunc(7, 8, ((fmtBits >>> 8) & 1) === 1);
+    for (let i = 9; i < 15; i++) setFunc(14 - i, 8, ((fmtBits >>> i) & 1) === 1);
+
+    for (let i = 0; i < 8; i++) setFunc(8, size - 1 - i, ((fmtBits >>> i) & 1) === 1);
+    for (let i = 8; i < 15; i++) setFunc(size - 15 + i, 8, ((fmtBits >>> i) & 1) === 1);
+
+    return grid.map(row => Array.from(row));
+  }
+
+  function renderQrMatrixToCanvas(canvas, matrix, darkColor) {
+    const ctx = canvas.getContext('2d');
+    const quietZone = 2;
+    const count = matrix.length;
+    const totalModules = count + quietZone * 2;
+    const scale = 6;
+    const pixelSize = totalModules * scale;
+
+    canvas.width = pixelSize;
+    canvas.height = pixelSize;
+    canvas.style.width = '156px';
+    canvas.style.height = '156px';
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, pixelSize, pixelSize);
+
+    ctx.fillStyle = darkColor || '#1B4332';
+    for (let r = 0; r < count; r++) {
+      for (let c = 0; c < count; c++) {
+        if (matrix[r][c]) {
+          ctx.fillRect((c + quietZone) * scale, (r + quietZone) * scale, scale, scale);
         }
       }
     }
