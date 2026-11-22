@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DoseDay — Smart Medication Reminder & Pill Tracker</title>
-  <meta name="description" content="Never miss a dose. DoseDay is a premium, privacy-first medication reminder app with Monday-to-Sunday weekly scheduling and reliable closed-app audible alarms. Download the Android APK today.">
+  <title>DoseDay | Smart Medication Tracker &amp; Pill Companion (Tarsi Edition)</title>
+  <meta name="description" content="See your health routine clearly. Log doses in seconds, talk to your smart companion, track pill stock offline, and never miss a dose with exact closed-app alarms.">
   <link rel="icon" type="image/png" href="assets/images/app_logo.png">
 
   <!-- Google Fonts: Plus Jakarta Sans & Inter -->
@@ -16,311 +16,534 @@
 </head>
 <body>
 
-  <!-- Ambient Background Glows -->
+  <!-- Ambient Nature Background Glows -->
   <div class="ambient-glow ambient-glow-1"></div>
   <div class="ambient-glow ambient-glow-2"></div>
 
-  <!-- Navigation Bar -->
+  <!-- Tarsi-Style Floating Pill Navigation Bar -->
   <header class="site-nav">
-    <div class="container">
+    <div class="nav-pill-container">
       <a href="#" class="brand-wrap">
-        <img src="assets/images/app_logo.png" alt="DoseDay Logo" class="brand-logo-img">
+        <img src="assets/images/app_logo.png" alt="DoseDay Mascot Logo" class="brand-logo-img">
         <div class="brand-text">
           <span class="brand-title">DoseDay</span>
-          <span class="brand-tag">Pill & Health Companion</span>
+          <span class="brand-tag">by Tarsi Health</span>
         </div>
       </a>
 
       <nav>
         <ul class="nav-links">
-          <li><a href="#features" class="nav-link">Features</a></li>
-          <li><a href="#playstore-showcase" class="nav-link">Screenshots</a></li>
-          <li><a href="#interactive-demo" class="nav-link">Live Demo</a></li>
-          <li><a href="#how-to-install" class="nav-link">How to Install</a></li>
+          <li><a href="#see-clearly" class="nav-link">Features</a></li>
+          <li><a href="#talk-to-doseday" class="nav-link">Talk to Tarsi</a></li>
+          <li><a href="#notifications-system" class="nav-link">Smart Alarms</a></li>
+          <li><a href="#interactive-demo" class="nav-link">7-Day Planner</a></li>
           <li><a href="#faq" class="nav-link">FAQ</a></li>
         </ul>
       </nav>
 
       <div class="nav-actions">
-        <button id="theme-toggle" class="theme-btn" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
-          <!-- Filled by app.js -->
-        </button>
-
-        <a href="downloads/DoseDay.apk" download="DoseDay.apk" class="btn-primary" id="nav-download-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
+        <button id="theme-toggle" class="theme-btn" title="Toggle Light/Dark Mode" aria-label="Toggle theme"></button>
+        <a href="downloads/DoseDay.apk" download="DoseDay.apk" class="btn-primary btn-nav-cta" id="nav-download-btn">
+          <span>Get App</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
           </svg>
-          <span>Download APK</span>
         </a>
       </div>
     </div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero Section (Modeled after tarsi.cloud) -->
   <section class="hero-section">
     <div class="container">
       <div class="hero-grid">
+        <!-- Left Hero Copy -->
         <div class="hero-content">
           <div class="hero-pill">
             <span class="hero-pill-dot"></span>
-            <span>2026 Edition • Smart Pill & Schedule Companion</span>
+            <span>Works 100% Offline • No Account Required • Smart Exact Alarms</span>
           </div>
 
           <h1 class="hero-title">
-            Never Miss a Dose. <br>
-            <span class="hero-title-highlight">Always Stay on Track.</span>
+            See your health clearly.<br>
+            <span class="hero-title-highlight">Never miss a dose.</span>
           </h1>
 
           <p class="hero-subtitle">
-            DoseDay combines a structured Monday–Sunday weekly planner with unmissable, high-priority audible alarms that fire reliably even when the app is completely closed. 100% offline and secure.
+            Meet your wide-eyed medication &amp; routine companion. Log daily doses in seconds with a fast GCash-inspired dashboard, natural-language chat logging, and unmissable closed-app alarms with instant <strong>Take</strong>, <strong>Snooze</strong> &amp; <strong>Skip</strong> buttons.
           </p>
 
           <div class="hero-cta-group">
-            <a href="downloads/DoseDay.apk" download="DoseDay.apk" class="btn-primary" id="hero-download-btn">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <a href="downloads/DoseDay.apk" download="DoseDay.apk" class="btn-primary btn-hero-store" id="hero-download-btn">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-1.0001 0-.5516.4482-.9998.9993-.9998.5521 0 1.0003.4482 1.0003.9998 0 .5515-.4482 1.0001-1.0003 1.0001m-11.046 0c-.5511 0-.9993-.4486-.9993-1.0001 0-.5516.4482-.9998.9993-.9998.5521 0 1.0003.4482 1.0003.9998 0 .5515-.4482 1.0001-1.0003 1.0001m11.4045-6.02l1.9967-3.4564c.1356-.2348.0551-.5363-.1795-.6718-.235-.1355-.5368-.055-.6723.18l-2.0236 3.503c-1.5342-.6998-3.2643-1.091-5.0028-1.091-1.7384 0-3.4685.3912-5.0028 1.091l-2.0236-3.503c-.1355-.235-.4373-.3155-.6723-.18-.2346.1355-.3151.437-.1795.6718l1.9967 3.4564c-3.7042 1.946-6.1963 5.7538-6.1963 10.1506h24.1824c0-4.3968-2.4921-8.2046-6.1963-10.1506"/>
               </svg>
               <div class="apk-badge-details">
-                <span class="apk-badge-main">Download DoseDay APK</span>
-                <span class="apk-badge-sub">v1.0.0 Release • Android 8.0+ (~60.4 MB)</span>
+                <span class="apk-badge-sub">FREE ON ANDROID</span>
+                <span class="apk-badge-main">Download APK (v2.0)</span>
               </div>
             </a>
 
-            <a href="#interactive-demo" class="btn-secondary">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
-              <span>Try Live Simulator</span>
+            <a href="#talk-to-doseday" class="btn-secondary">
+              <span>✨ Talk to Tarsi Demo</span>
             </a>
+
+            <button class="btn-secondary js-play-chime" type="button">
+              <span>🔔 Hear Alarm Chime</span>
+            </button>
           </div>
 
-          <ul class="hero-trust-list">
-            <li class="hero-trust-item">
-              <span class="hero-trust-icon">✓</span> 100% Offline & Private
-            </li>
-            <li class="hero-trust-item">
-              <span class="hero-trust-icon">✓</span> Custom Soothing Chime
-            </li>
-            <li class="hero-trust-item">
-              <span class="hero-trust-icon">✓</span> Closed-App Exact Alarms
-            </li>
-            <li class="hero-trust-item">
-              <span class="hero-trust-icon">✓</span> Zero Ads & Zero Tracking
-            </li>
-          </ul>
+          <div class="tarsi-metrics-strip">
+            <div class="tarsi-metric">
+              <div class="tarsi-metric-val">&lt; 1 sec</div>
+              <div class="tarsi-metric-lbl">Frictionless Dose Logging</div>
+            </div>
+            <div class="tarsi-metric-divider"></div>
+            <div class="tarsi-metric">
+              <div class="tarsi-metric-val">100%</div>
+              <div class="tarsi-metric-lbl">Offline Local SQLite Privacy</div>
+            </div>
+            <div class="tarsi-metric-divider"></div>
+            <div class="tarsi-metric">
+              <div class="tarsi-metric-val">Exact</div>
+              <div class="tarsi-metric-lbl">Closed-App Wake Alarms</div>
+            </div>
+          </div>
         </div>
 
-        <!-- Phone Mockup with Realistic Frame -->
+        <!-- Right Hero Live Interactive Tarsi + GCash Mobile App Replica -->
         <div class="mockup-wrapper">
-          <!-- Floating notification chime pill -->
+          <!-- Floating Live Notification Action Pill -->
           <div class="floating-pill floating-pill-left">
-            <div class="pill-icon pill-icon-chime">🔔</div>
+            <div class="pill-icon pill-icon-chime">💊</div>
             <div>
-              <div class="pill-title">Exact Alarm Chime</div>
-              <div class="pill-desc">Wakes device on time</div>
+              <div class="pill-title">Amoxicillin 500mg Due</div>
+              <div class="pill-desc">Tap Take • Snooze 10m • Skip</div>
             </div>
-            <button class="play-audio-btn js-play-chime" title="Play Chime" aria-label="Play chime">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <button class="play-audio-btn js-play-chime" title="Play Alarm Chime" aria-label="Play chime">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                 <polygon points="5 3 19 12 5 21 5 3"></polygon>
               </svg>
             </button>
           </div>
 
-          <!-- Floating Monday-Sunday weekly pill -->
-          <div class="floating-pill floating-pill-right">
-            <div class="pill-icon pill-icon-calendar">📅</div>
-            <div>
-              <div class="pill-title">Mon – Sun Strip</div>
-              <div class="pill-desc">Continuous 7-Day Cycle</div>
-            </div>
-          </div>
-
           <div class="phone-frame">
-            <div class="phone-notch">
-              <span class="notch-camera"></span>
-              <span class="notch-speaker"></span>
+            <div class="phone-notch"></div>
+
+            <!-- Live Interactive Tarsi / GCash Mobile App Screen -->
+            <div class="tarsi-app-screen" id="live-phone-app">
+              <!-- Scenic Rice Terrace Header -->
+              <div class="tarsi-scenic-header">
+                <div class="tarsi-hill-bg"></div>
+                <div class="tarsi-top-bar">
+                  <div class="tarsi-streak-btn" title="7-Day Health Streak">
+                    <span class="streak-fire">🔥</span>
+                    <span class="streak-badge" id="phone-streak-count">7</span>
+                  </div>
+                  <div class="tarsi-top-capsule">
+                    <button type="button" class="capsule-icon-btn js-trigger-phone-notif" title="Test Notification">🔔<span class="notif-dot"></span></button>
+                    <button type="button" class="capsule-icon-btn" title="Caregiver & Profile">👥</button>
+                    <button type="button" class="capsule-icon-btn" title="Settings">⚙️</button>
+                  </div>
+                </div>
+
+                <div class="tarsi-greeting-wrap">
+                  <div class="tarsi-date-label">THURSDAY, SEPTEMBER 17</div>
+                  <div class="tarsi-greeting-title">Good morning, <strong>Bryl!</strong></div>
+                </div>
+
+                <!-- Mascot & Speech Bubble -->
+                <div class="tarsi-mascot-row">
+                  <div class="tarsi-mascot-avatar">
+                    <img src="assets/images/app_logo.png" alt="Tarsi Mascot">
+                  </div>
+                  <div class="tarsi-speech-bubble">
+                    <div class="speech-brand">Tarsi • DoseDay</div>
+                    <p id="phone-assistant-msg">You have 1 overdue dose this morning. Tap a medication below to log it and keep your 7-day streak!</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- White Dashboard Body -->
+              <div class="tarsi-sheet-body">
+                <!-- GCash / Tarsi Quick Actions -->
+                <div class="tarsi-section-row">
+                  <span class="tarsi-sec-title">Quick actions</span>
+                  <span class="tarsi-edit-icon">✎</span>
+                </div>
+                <div class="tarsi-quick-grid">
+                  <div class="tarsi-quick-item js-phone-quick" data-msg="Quick Dose Logger ready! Tap any dose below to mark it Taken.">
+                    <div class="tarsi-quick-box">💳</div>
+                    <span>Log Dose</span>
+                  </div>
+                  <div class="tarsi-quick-item js-phone-quick" data-msg="Medicine Cabinet: 4 active prescriptions, 84 total pills in stock.">
+                    <div class="tarsi-quick-box">◕</div>
+                    <span>Cabinet</span>
+                  </div>
+                  <div class="tarsi-quick-item js-phone-quick" data-msg="Health Goal: 95% adherence target this month. You're right on track!">
+                    <div class="tarsi-quick-box">⚑</div>
+                    <span>Goals</span>
+                  </div>
+                  <div class="tarsi-quick-item js-phone-quick" data-msg="Refill Alert: Amoxicillin has 5 capsules left. Restock reminder queued.">
+                    <div class="tarsi-quick-box">🧾</div>
+                    <span>Refills</span>
+                  </div>
+                  <div class="tarsi-quick-item js-phone-quick" data-msg="7-Day Planner synced from Monday to Sunday with exact alarms.">
+                    <div class="tarsi-quick-box">📅</div>
+                    <span>Planned</span>
+                  </div>
+                  <div class="tarsi-quick-item js-phone-quick" data-msg="Talk to Tarsi: Type 'Vitamin D 9am' to add a reminder in under 1 second!">
+                    <div class="tarsi-quick-box">💬</div>
+                    <span>Talk AI</span>
+                  </div>
+                </div>
+
+                <!-- Side-by-Side Bento Cards (95% Pink Donut + Today Day/Week/Month) -->
+                <div class="tarsi-bento-grid">
+                  <!-- Left Donut Card -->
+                  <div class="tarsi-bento-card">
+                    <div class="tarsi-donut-row">
+                      <div class="tarsi-donut-ring">
+                        <span id="phone-donut-pct">95%</span>
+                      </div>
+                      <div class="tarsi-donut-legend">
+                        <div class="legend-item"><span class="dot dot-pink"></span><strong>95%</strong></div>
+                        <div class="legend-item"><span class="dot dot-amber"></span><strong>4%</strong></div>
+                        <div class="legend-item"><span class="dot dot-blue"></span><strong>1%</strong></div>
+                      </div>
+                    </div>
+                    <div class="tarsi-card-foot">Tap to view breakdown ›</div>
+                  </div>
+
+                  <!-- Right Today Card -->
+                  <div class="tarsi-bento-card">
+                    <div class="tarsi-today-title" id="phone-period-title">Today</div>
+                    <div class="tarsi-trend-up" id="phone-trend-up">↗ 3 Doses Taken</div>
+                    <div class="tarsi-trend-down" id="phone-trend-down">↘ 84 Pills Left</div>
+                    <div class="tarsi-period-pills">
+                      <button type="button" class="period-pill active" data-period="Day" data-up="↗ 3 Doses Taken" data-down="↘ 84 Pills Left">Day</button>
+                      <button type="button" class="period-pill" data-period="Week" data-up="↗ 21 Doses Taken" data-down="↘ 98% On-Time">Week</button>
+                      <button type="button" class="period-pill" data-period="Month" data-up="↗ 92 Doses Taken" data-down="↘ 2 Refills">Month</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Doses Due Section (modeled after Payments due in screenshot) -->
+                <div class="tarsi-due-header">
+                  <div>
+                    <div class="tarsi-sec-title">Doses due</div>
+                    <div class="tarsi-sec-sub">3 medications coming up today</div>
+                  </div>
+                  <div class="tarsi-due-total">
+                    <div class="due-total-val" id="phone-due-count">3 Left</div>
+                    <div class="due-total-lbl">TOTAL DUE ›</div>
+                  </div>
+                </div>
+
+                <div class="tarsi-due-list">
+                  <!-- Row 1 -->
+                  <div class="tarsi-due-item js-phone-dose-row">
+                    <div class="due-date-box overdue">
+                      <span class="m">SEP</span>
+                      <span class="d">12</span>
+                    </div>
+                    <div class="due-mid">
+                      <div class="due-badges">
+                        <span class="brand-dot" style="background:#0056B3;">💊</span>
+                        <span class="due-chip overdue-chip">15m overdue</span>
+                      </div>
+                      <div class="due-name">Amoxicillin 500mg</div>
+                    </div>
+                    <div class="due-right">
+                      <div class="due-amt">08:00 AM</div>
+                      <div class="due-tag">1 CAP • DUE</div>
+                    </div>
+                  </div>
+
+                  <!-- Row 2 -->
+                  <div class="tarsi-due-item js-phone-dose-row">
+                    <div class="due-date-box">
+                      <span class="m">SEP</span>
+                      <span class="d">19</span>
+                    </div>
+                    <div class="due-mid">
+                      <div class="due-badges">
+                        <span class="brand-dot" style="background:#2D6A4F;">☀️</span>
+                        <span class="due-chip">2 hrs left</span>
+                      </div>
+                      <div class="due-name">Vitamin D3 + K2</div>
+                    </div>
+                    <div class="due-right">
+                      <div class="due-amt">12:00 PM</div>
+                      <div class="due-tag">1 TAB • DUE</div>
+                    </div>
+                  </div>
+
+                  <!-- Row 3 -->
+                  <div class="tarsi-due-item js-phone-dose-row">
+                    <div class="due-date-box">
+                      <span class="m">SEP</span>
+                      <span class="d">22</span>
+                    </div>
+                    <div class="due-mid">
+                      <div class="due-badges">
+                        <span class="brand-dot" style="background:#D90429;">❤️</span>
+                        <span class="due-chip">5 hrs left</span>
+                      </div>
+                      <div class="due-name">Losartan Potassium</div>
+                    </div>
+                    <div class="due-right">
+                      <div class="due-amt">08:00 PM</div>
+                      <div class="due-tag">50 MG • DUE</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Floating Glass Capsule Bottom Nav + Separate Circular '+' Button -->
+              <div class="tarsi-bottom-dock">
+                <div class="tarsi-nav-capsule">
+                  <div class="tarsi-nav-tab active">
+                    <span>🏠</span>
+                    <small>Home</small>
+                  </div>
+                  <div class="tarsi-nav-tab">
+                    <span>👛</span>
+                    <small>Cabinet</small>
+                  </div>
+                  <div class="tarsi-nav-tab">
+                    <span>📅</span>
+                    <small>Plan</small>
+                  </div>
+                  <div class="tarsi-nav-tab">
+                    <span>🕒</span>
+                    <small>History</small>
+                  </div>
+                </div>
+                <button type="button" class="tarsi-plus-fab js-trigger-phone-notif" title="Add Medication">+</button>
+              </div>
             </div>
-            <img src="assets/playstore/playstore_slide_one_1792822482509.jpg" alt="DoseDay App Interface" class="phone-screen" id="phone-screen-img">
           </div>
 
-          <!-- Screen Switcher Tabs -->
-          <div class="mockup-controls">
-            <button class="screen-tab-btn active" data-screen="adherence">Daily Adherence</button>
-            <button class="screen-tab-btn" data-screen="planner">Weekly Planner</button>
-            <button class="screen-tab-btn" data-screen="alarms">Exact Alarms</button>
+          <div class="mockup-caption">
+            ✨ Interactive Phone Preview: Click any dose row, Day/Week/Month pill, or Quick Action above!
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Key Features Grid -->
-  <section class="section-wrap" id="features">
+  <!-- Tarsi Pillar 1: "See your health clearly" Bento Grid -->
+  <section class="section-wrap" id="see-clearly">
     <div class="container">
       <div class="section-head">
-        <span class="section-tag">Designed for Perfection</span>
-        <h2 class="section-title">Built to Keep You Consistently Healthy</h2>
-        <p class="section-desc">Every interaction in DoseDay is fine-tuned to remove friction, protect your privacy, and guarantee you never miss a pill.</p>
+        <span class="section-tag">See Your Routine Clearly</span>
+        <h2 class="section-title">Everything you need on a single, friendly screen.</h2>
+        <p class="section-desc">Inspired by Tarsi and GCash's super-app clarity—monitor your daily doses, pill inventory, adherence streaks, and upcoming refills without clutter.</p>
       </div>
 
       <div class="features-grid">
-        <!-- Feature 1: Mon-Sun Schedule -->
         <div class="feature-card">
           <div class="feature-icon-box" style="background: var(--primary-soft); color: var(--primary);">
-            📅
+            🦉
           </div>
-          <h3 class="feature-card-title">Monday–Sunday Calendar</h3>
+          <h3 class="feature-card-title">Watchful Companion Insights</h3>
           <p class="feature-card-desc">
-            Structured 7-day strip starting cleanly on Monday and ending Sunday. Swipe left or right to seamlessly restart to another week, with a quick <strong>Today</strong> button.
+            Your friendly mascot sits at the top of your dashboard and proactively warns you when a dose is overdue or when a prescription is running low on stock.
           </p>
         </div>
 
-        <!-- Feature 2: Closed-App Alarms -->
         <div class="feature-card">
           <div class="feature-icon-box" style="background: var(--coral-bg); color: var(--coral);">
-            🔔
+            🍩
           </div>
-          <h3 class="feature-card-title">Closed-App Exact Alarms</h3>
+          <h3 class="feature-card-title">95% Adherence Donut &amp; Trends</h3>
           <p class="feature-card-desc">
-            Powered by Android's exact alarm scheduling and high-priority notification channels. Reminders fire with precision even when DoseDay is completely closed or killed.
-          </p>
-          <div class="audio-sample-card">
-            <div>
-              <div style="font-size: 0.82rem; font-weight: 700;">Hear Reminder Chime</div>
-              <div style="font-size: 0.72rem; color: var(--text-muted);">44.1kHz Soothing Arpeggio</div>
-            </div>
-            <button class="play-audio-btn js-play-chime" title="Test Audio">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Feature 3: Stock & Refill Alerts -->
-        <div class="feature-card">
-          <div class="feature-icon-box" style="background: var(--amber-bg); color: var(--amber);">
-            💊
-          </div>
-          <h3 class="feature-card-title">Smart Pill Stock & Refills</h3>
-          <p class="feature-card-desc">
-            Tracks tablet inventory every time you take a dose. When medication supplies fall below your custom threshold, an ambient yellow restock banner alerts you in advance.
+            Side-by-side Bento cards give you an instant visual breakdown of Taken, Pending, and Skipped doses alongside a live <strong>Day / Week / Month</strong> toggle.
           </p>
         </div>
 
-        <!-- Feature 4: Adherence Analytics -->
         <div class="feature-card">
           <div class="feature-icon-box" style="background: var(--mint-bg); color: var(--mint);">
-            📊
+            ⚡
           </div>
-          <h3 class="feature-card-title">Adherence Rings & Insights</h3>
+          <h3 class="feature-card-title">GCash-Style Quick Actions</h3>
           <p class="feature-card-desc">
-            Figma-style radial progress rings keep you motivated. Review daily completion rates, monthly streaks, and routine consistency at a single glance.
+            One-tap squircle shortcuts for <strong>Log Dose</strong>, <strong>Cabinet</strong>, <strong>Goals</strong>, <strong>Refills</strong>, <strong>Planned</strong>, and <strong>Talk AI</strong> right on the home screen.
           </p>
         </div>
 
-        <!-- Feature 5: Wake & Sleep Sync -->
+        <div class="feature-card">
+          <div class="feature-icon-box" style="background: var(--amber-bg); color: var(--amber);">
+            📦
+          </div>
+          <h3 class="feature-card-title">Automatic Pill Stock &amp; Refills</h3>
+          <p class="feature-card-desc">
+            Every time you tap "Take Dose", DoseDay automatically deducts from your bottle count and sends a proactive notification when it hits your refill threshold.
+          </p>
+        </div>
+
         <div class="feature-card">
           <div class="feature-icon-box" style="background: var(--blue-bg); color: var(--blue);">
-            🌙
+            📅
           </div>
-          <h3 class="feature-card-title">Routine & Bedtime Sync</h3>
+          <h3 class="feature-card-title">Doses Due Timeline</h3>
           <p class="feature-card-desc">
-            Set your wake-up time and bedtime in your personal profile. DoseDay organizes your daily doses into Breakfast, Lunch, Evening, and Bedtime blocks.
+            Modeled after Tarsi's "Payments due" list—clear date squircles, overdue red chips, countdown badges ("2 hrs left"), and instant tap-to-log actions.
           </p>
         </div>
 
-        <!-- Feature 6: 100% Offline Privacy -->
         <div class="feature-card">
           <div class="feature-icon-box" style="background: var(--primary-soft); color: var(--primary);">
             🔒
           </div>
-          <h3 class="feature-card-title">100% On-Device Privacy</h3>
+          <h3 class="feature-card-title">100% Offline-First Privacy</h3>
           <p class="feature-card-desc">
-            Your medical records never leave your phone. Powered by an on-device SQLite database with zero third-party trackers, zero telemetry, and zero mandatory cloud accounts.
+            Works completely offline out of the box. Your health data stays privately on your phone in local SQLite storage with zero mandatory sign-ups or ads.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Google Play Store Showcase / Screenshots Section -->
-  <section class="section-wrap" id="playstore-showcase">
+  <!-- Tarsi Pillar 2: "Talk to Tarsi • DoseDay" Natural Language Logger -->
+  <section class="section-wrap talk-section" id="talk-to-doseday">
     <div class="container">
-      <div class="section-head">
-        <span class="section-tag">Play Store Assets</span>
-        <h2 class="section-title">Official App Showcase & Review Previews</h2>
-        <p class="section-desc">Experience DoseDay's visual 85% adherence rings, structured Monday–Sunday timeline, and exact closed-app alarms.</p>
-      </div>
+      <div class="talk-card">
+        <div class="talk-left">
+          <span class="section-tag">Talk to Tarsi • Natural Language Logging</span>
+          <h2 class="section-title" style="text-align:left; margin-bottom:14px;">Log medications in sub-seconds. Just type naturally.</h2>
+          <p class="section-desc" style="text-align:left; margin-bottom:24px;">
+            Why fill out 8 form fields when you can just type <em>"Amoxicillin 500mg 08:00"</em>? Try the live natural-language parser below—the exact same engine built into the mobile app's <strong>Talk AI</strong> quick action.
+          </p>
 
-      <div class="playstore-grid">
-        <!-- Photo 1: Daily Adherence -->
-        <div class="playstore-card js-lightbox-trigger" data-img="assets/playstore/playstore_slide_one_1792822482509.jpg">
-          <div class="playstore-img-wrap">
-            <span class="playstore-badge-tag">Smart Pill Tracker</span>
-            <img src="assets/playstore/playstore_slide_one_1792822482509.jpg" alt="Never Miss a Dose - Daily Pill Tracker" class="playstore-img" loading="lazy">
+          <div class="nlp-input-box">
+            <input type="text" id="nlp-demo-input" value="Amoxicillin 500mg at 08:00 AM" placeholder="Type e.g. 'Vitamin D3 2000IU at 09:00 AM'...">
+            <button type="button" class="btn-primary" id="nlp-parse-btn">Parse &amp; Schedule</button>
           </div>
-          <div class="playstore-card-body">
-            <h3 class="playstore-card-title">Never Miss a Dose</h3>
-            <p class="playstore-card-desc">85% Progress adherence ring with easy-to-use dose check-off and daily routine tracking.</p>
-            <span class="playstore-zoom-btn">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-              Click to preview slide
-            </span>
+
+          <div class="nlp-presets">
+            <span>Try:</span>
+            <button type="button" class="nlp-chip" data-text="Amoxicillin 500mg at 08:00 AM">Amoxicillin 500mg 8am</button>
+            <button type="button" class="nlp-chip" data-text="Vitamin D3 2000IU at 12:00 PM">Vitamin D3 2000IU 12pm</button>
+            <button type="button" class="nlp-chip" data-text="Losartan 50mg at 08:00 PM">Losartan 50mg 8pm</button>
           </div>
         </div>
 
-        <!-- Photo 2: 7-Day Weekly Planner -->
-        <div class="playstore-card js-lightbox-trigger" data-img="assets/playstore/playstore_slide_two_1792822515894.jpg">
-          <div class="playstore-img-wrap">
-            <span class="playstore-badge-tag">7-Day Schedule</span>
-            <img src="assets/playstore/playstore_slide_two_1792822515894.jpg" alt="7-Day Weekly Planner - Monday to Sunday Strip" class="playstore-img" loading="lazy">
-          </div>
-          <div class="playstore-card-body">
-            <h3 class="playstore-card-title">7-Day Weekly Planner</h3>
-            <p class="playstore-card-desc">Starts Monday to Sunday with smooth week restarts, dose timeline, and adherence status.</p>
-            <span class="playstore-zoom-btn">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-              Click to preview slide
-            </span>
-          </div>
-        </div>
-
-        <!-- Photo 3: Exact Closed-App Alarms -->
-        <div class="playstore-card js-lightbox-trigger" data-img="assets/playstore/playstore_slide_three_1792822533786.jpg">
-          <div class="playstore-img-wrap">
-            <span class="playstore-badge-tag">Exact Alarms</span>
-            <img src="assets/playstore/playstore_slide_three_1792822533786.jpg" alt="Exact Closed-App Alarms - Loud Audible Chimes" class="playstore-img" loading="lazy">
-          </div>
-          <div class="playstore-card-body">
-            <h3 class="playstore-card-title">Exact Closed-App Alarms</h3>
-            <p class="playstore-card-desc">Loud audible chimes that never miss when app is closed, with instant dose action buttons.</p>
-            <span class="playstore-zoom-btn">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-              Click to preview slide
-            </span>
+        <div class="talk-right">
+          <div class="parsed-preview-card" id="nlp-result-card">
+            <div class="parsed-header">
+              <span class="parsed-badge">✓ Instant Structured Schedule</span>
+              <span class="parsed-speed">0.02s offline</span>
+            </div>
+            <div class="parsed-title" id="parsed-med-name">Amoxicillin</div>
+            <div class="parsed-grid">
+              <div class="parsed-item">
+                <small>DOSAGE</small>
+                <strong id="parsed-med-dose">500 mg</strong>
+              </div>
+              <div class="parsed-item">
+                <small>ALARM TIME</small>
+                <strong id="parsed-med-time">08:00 AM</strong>
+              </div>
+              <div class="parsed-item">
+                <small>INITIAL STOCK</small>
+                <strong>30 units (Alert @ 5)</strong>
+              </div>
+              <div class="parsed-item">
+                <small>ALARM MODE</small>
+                <strong>Exact Allow-While-Idle</strong>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Live Interactive Week Simulator -->
+  <!-- Tarsi Pillar 3: Upgraded Notification & Closed-App Alarm System -->
+  <section class="section-wrap" id="notifications-system">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">Upgraded Notification Engine v6</span>
+        <h2 class="section-title">Smarter Alarms You Can Act On Without Opening the App</h2>
+        <p class="section-desc">We engineered DoseDay's notification system for 100% reliability on Android 8–15, complete with lock-screen action buttons, smart 10-minute snooze, and proactive refill alerts.</p>
+      </div>
+
+      <div class="notif-showcase-grid">
+        <!-- Interactive Android Notification Card Simulator -->
+        <div class="notif-sim-card">
+          <div class="notif-sim-top">
+            <div class="notif-app-brand">
+              <img src="assets/images/app_logo.png" alt="DoseDay" width="22" height="22" style="border-radius:6px;">
+              <span>DoseDay • Medication Alarm • now</span>
+            </div>
+            <span class="notif-exact-tag">EXACT ALARM</span>
+          </div>
+          <div class="notif-sim-body">
+            <div class="notif-sim-title" id="sim-notif-title">💊 Time for Amoxicillin</div>
+            <div class="notif-sim-desc" id="sim-notif-desc">500 mg • Take after breakfast (8:00 AM) • 29 capsules left</div>
+          </div>
+          <div class="notif-sim-actions">
+            <button type="button" class="notif-action-btn take js-notif-sim-btn" data-action="taken">✓ Take Dose</button>
+            <button type="button" class="notif-action-btn snooze js-notif-sim-btn" data-action="snoozed">⏰ Snooze 10m</button>
+            <button type="button" class="notif-action-btn skip js-notif-sim-btn" data-action="skipped">✕ Skip</button>
+          </div>
+          <div class="notif-sim-feedback" id="sim-notif-feedback">
+            👆 Click an action button above to test the new system tray workflow &amp; 44.1kHz chime!
+          </div>
+        </div>
+
+        <!-- 4 Upgraded Notification Capabilities -->
+        <div class="notif-features-list">
+          <div class="notif-feat-item">
+            <div class="notif-feat-icon">⚡</div>
+            <div>
+              <h4>Direct System Tray Action Buttons</h4>
+              <p>Mark a dose as <strong>Taken</strong>, <strong>Snooze 10m</strong>, or <strong>Skip</strong> directly from the lock-screen notification banner—stock updates automatically in SQLite.</p>
+            </div>
+          </div>
+          <div class="notif-feat-item">
+            <div class="notif-feat-icon">⏰</div>
+            <div>
+              <h4>1-Tap Smart Snooze &amp; 5-Second Lock Test</h4>
+              <p>Running late? Snooze any reminder for 10 minutes, or trigger the built-in <strong>5-Second Lock-Screen Alarm Test</strong> to verify background delivery on your phone.</p>
+            </div>
+          </div>
+          <div class="notif-feat-item">
+            <div class="notif-feat-icon">📦</div>
+            <div>
+              <h4>Proactive Low-Stock Refill Alerts</h4>
+              <p>Automatically triggers a refill alert notification the moment a prescription's remaining stock reaches your custom refill threshold.</p>
+            </div>
+          </div>
+          <div class="notif-feat-item">
+            <div class="notif-feat-icon">🔊</div>
+            <div>
+              <h4>Live OS Alarm Diagnostics &amp; Custom Chime</h4>
+              <p>Inspect the exact count of queued OS alarms, toggle the soothing 44.1kHz arpeggio chime or haptic vibration, and re-sync 14 days of exact alarms in one tap.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Interactive Monday–Sunday Week Simulator -->
   <section class="section-wrap interactive-section" id="interactive-demo">
     <div class="container">
       <div class="section-head">
-        <span class="section-tag">Interactive Preview</span>
-        <h2 class="section-title">Experience the Monday–Sunday Flow</h2>
-        <p class="section-desc">Test the real date strip, jump between weeks, and click to mark sample doses as taken with audio chime feedback.</p>
+        <span class="section-tag">Plan Ahead with Confidence</span>
+        <h2 class="section-title">Interactive Monday–Sunday 7-Day Planner</h2>
+        <p class="section-desc">Navigate through weeks, inspect daily scheduled doses, and test one-tap dose check-off with audio chime feedback.</p>
       </div>
 
       <div class="simulator-box">
         <div class="sim-header">
           <div>
             <div style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Selected Week</div>
-            <div id="sim-week-range" style="font-size: 1.15rem; font-weight: 800; color: var(--text-main);">19 – 25 Oct, 2026</div>
+            <div id="sim-week-range" style="font-size: 1.15rem; font-weight: 800; color: var(--text-main);">16 – 22 Nov, 2026</div>
           </div>
           <div class="sim-nav">
             <button class="sim-nav-btn" id="sim-today-btn">Today</button>
@@ -329,21 +552,17 @@
           </div>
         </div>
 
-        <!-- Monday to Sunday 7-Day Strip -->
-        <div class="sim-week-strip" id="sim-week-strip">
-          <!-- Filled by app.js -->
-        </div>
+        <div class="sim-week-strip" id="sim-week-strip"></div>
 
-        <!-- Sample Doses for Selected Date -->
         <div style="margin-top: 24px;">
-          <h4 style="font-size: 1.1rem; margin-bottom: 14px;">Scheduled Doses for this Day</h4>
+          <h4 style="font-size: 1.05rem; margin-bottom: 14px;">Doses Due for Selected Day</h4>
 
           <div class="sim-dose-item">
             <div class="sim-dose-info">
-              <div class="sim-dose-pill-icon" style="background: var(--coral-bg); color: var(--coral);">💊</div>
+              <div class="sim-dose-pill-icon" style="background: var(--primary-soft); color: var(--primary);">💊</div>
               <div>
-                <div style="font-weight: 800; font-size: 1rem;">Amoxicillin</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">500 mg • 1 tablet(s) • After meal (08:00 AM)</div>
+                <div style="font-weight: 800; font-size: 1rem;">Amoxicillin 500mg</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">1 capsule • Take after breakfast (08:00 AM)</div>
               </div>
             </div>
             <button class="sim-check-btn js-sim-check">Take Dose</button>
@@ -354,7 +573,7 @@
               <div class="sim-dose-pill-icon" style="background: var(--amber-bg); color: var(--amber);">☀️</div>
               <div>
                 <div style="font-weight: 800; font-size: 1rem;">Vitamin D3 + K2</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">2000 IU • 1 softgel • Morning routine (09:30 AM)</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">2000 IU • 1 softgel • Lunch routine (12:00 PM)</div>
               </div>
             </div>
             <button class="sim-check-btn js-sim-check">Take Dose</button>
@@ -362,10 +581,10 @@
 
           <div class="sim-dose-item">
             <div class="sim-dose-info">
-              <div class="sim-dose-pill-icon" style="background: var(--blue-bg); color: var(--blue);">🌙</div>
+              <div class="sim-dose-pill-icon" style="background: var(--coral-bg); color: var(--coral);">❤️</div>
               <div>
-                <div style="font-weight: 800; font-size: 1rem;">Omega-3 Fish Oil</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">1000 mg • 2 capsule(s) • Before bedtime (09:00 PM)</div>
+                <div style="font-weight: 800; font-size: 1rem;">Losartan Potassium 50mg</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">1 tablet • Evening maintenance (08:00 PM)</div>
               </div>
             </div>
             <button class="sim-check-btn js-sim-check">Take Dose</button>
@@ -375,15 +594,15 @@
     </div>
   </section>
 
-  <!-- Download Section & Direct APK Link -->
+  <!-- Direct APK Download Portal -->
   <section class="section-wrap download-section" id="download">
     <div class="container">
       <div class="download-box">
         <div>
-          <span style="display:inline-block; padding: 6px 14px; background: rgba(255,255,255,0.2); border-radius: 999px; font-size: 0.85rem; font-weight: 800; margin-bottom: 16px;">Direct APK Download</span>
-          <h2 class="download-title">Get DoseDay on Your Android Device</h2>
+          <span class="download-pill-tag">Direct Android APK • Tarsi &amp; GCash UI Edition</span>
+          <h2 class="download-title">Start tracking your health with DoseDay today.</h2>
           <p class="download-desc">
-            Download the official standalone Android APK directly. Compatible with Android 8.0 Oreo through Android 15. No Google Play account required.
+            Free, offline-first, and private. Compatible with Android 8.0 through Android 15 with exact closed-app alarm support.
           </p>
 
           <div style="display:flex; flex-wrap: wrap; gap: 16px; align-items: center;">
@@ -393,60 +612,22 @@
                 <polyline points="7 10 12 15 17 10"></polyline>
                 <line x1="12" y1="15" x2="12" y2="3"></line>
               </svg>
-              <span>Download APK (v1.0.0)</span>
+              <span>Download DoseDay APK</span>
             </a>
 
-            <div style="font-size: 0.85rem; color: rgba(255,255,255,0.85);">
-              <div>• Package: <code>com.example.medication_reminder</code></div>
-              <div>• Build Size: <strong>~60.4 MB</strong> • Verified Clean Release APK</div>
+            <div style="font-size: 0.85rem; color: rgba(255,255,255,0.88);">
+              <div>• 100% Offline SQLite • Zero Ads</div>
+              <div>• Interactive Lock-Screen Alarm Actions</div>
             </div>
           </div>
         </div>
 
-        <!-- Scan to Download QR Card -->
         <div class="qr-card">
           <div class="qr-canvas-wrap">
             <canvas id="qr-canvas"></canvas>
           </div>
-          <div class="qr-card-title">Scan from Android Phone</div>
-          <div class="qr-card-sub">Point your camera to download APK directly over your network</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- How to Install Steps -->
-  <section class="section-wrap" id="how-to-install">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-tag">Easy Setup</span>
-        <h2 class="section-title">How to Install in 3 Simple Steps</h2>
-        <p class="section-desc">Installing the APK directly on Android takes less than 60 seconds.</p>
-      </div>
-
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-number">01</div>
-          <h3 style="font-size: 1.3rem; margin-bottom: 10px;">Download the APK</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem;">
-            Tap the <strong>Download APK</strong> button above to save <code>DoseDay.apk</code> onto your phone's storage.
-          </p>
-        </div>
-
-        <div class="step-card">
-          <div class="step-number">02</div>
-          <h3 style="font-size: 1.3rem; margin-bottom: 10px;">Allow Installation</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem;">
-            Open the downloaded file. If prompted by Android, tap <em>Settings</em> and enable <em>"Allow from this source"</em>.
-          </p>
-        </div>
-
-        <div class="step-card">
-          <div class="step-number">03</div>
-          <h3 style="font-size: 1.3rem; margin-bottom: 10px;">Open & Set Routine</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem;">
-            Launch DoseDay, grant notification & alarm permissions when prompted, and start adding your daily medications!
-          </p>
+          <div class="qr-card-title">Scan to Download APK</div>
+          <div class="qr-card-sub">Point your Android camera to install directly</div>
         </div>
       </div>
     </div>
@@ -456,49 +637,39 @@
   <section class="section-wrap" id="faq">
     <div class="container">
       <div class="section-head">
-        <span class="section-tag">Got Questions?</span>
+        <span class="section-tag">FAQ</span>
         <h2 class="section-title">Frequently Asked Questions</h2>
-        <p class="section-desc">Everything you need to know about notifications, privacy, and device compatibility.</p>
+        <p class="section-desc">Everything you need to know about DoseDay's Tarsi-inspired interface, offline privacy, and exact alarms.</p>
       </div>
 
       <div class="faq-list">
-        <div class="faq-item">
+        <div class="faq-item open">
           <div class="faq-question">
-            <span>Do alarms ring if the app is completely closed or killed?</span>
+            <span>Can I mark a dose as Taken or Snooze it directly from the notification?</span>
             <span class="faq-chevron">▾</span>
           </div>
           <div class="faq-answer">
-            Yes! DoseDay registers exact one-shot alarms with Android's system <code>AlarmManager</code> using <code>SCHEDULE_EXACT_ALARM</code> and <code>USE_EXACT_ALARM</code>. Even if you swipe the app away from recent tasks, the system wakes the device and triggers the high-priority reminder with sound and vibration at the exact minute.
+            Yes! Our upgraded Notification Engine v6 includes interactive action buttons (<strong>✓ Take Dose</strong>, <strong>⏰ Snooze 10m</strong>, and <strong>✕ Skip</strong>) directly on the system notification card, and automatically updates your pill stock and streak.
           </div>
         </div>
 
         <div class="faq-item">
           <div class="faq-question">
-            <span>How does the Monday-to-Sunday weekly strip work?</span>
+            <span>Do alarms ring even when the app is completely closed?</span>
             <span class="faq-chevron">▾</span>
           </div>
           <div class="faq-answer">
-            The schedule calendar is structured as a full 7-day Monday through Sunday calendar week. When you swipe left/right or tap the previous/next chevrons, the view restarts smoothly with the next or previous week's Monday-to-Sunday block. You can also tap the <em>Today</em> button at any time to return to today's active date.
+            Yes. DoseDay uses Android's hardware-backed <code>AlarmManager</code> with <code>exactAllowWhileIdle</code> and high-priority alarm audio channels so reminders fire on the exact minute even if the app is swiped away.
           </div>
         </div>
 
         <div class="faq-item">
           <div class="faq-question">
-            <span>Is my health and medication data private?</span>
+            <span>Does DoseDay require an account or internet connection?</span>
             <span class="faq-chevron">▾</span>
           </div>
           <div class="faq-answer">
-            100% private. All medication names, dosage quantities, refill logs, and profile records are stored exclusively in your device's local encrypted SQLite database. There are no remote servers, no user accounts required, and no tracking scripts.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>Tips for Vivo, Xiaomi, Oppo, or Samsung phones?</span>
-            <span class="faq-chevron">▾</span>
-          </div>
-          <div class="faq-answer">
-            Some Android manufacturers enable aggressive battery savers. For maximum reliability, go to your phone's <em>Settings &gt; Apps &gt; DoseDay &gt; Battery</em> and set it to <strong>"Unrestricted"</strong> or <strong>"No restrictions"</strong>, and ensure <em>"Alarms & Reminders"</em> permission is allowed.
+            Never. Like Tarsi, DoseDay is 100% offline-first. All your prescriptions, dose history, and refill thresholds stay strictly on your device in local SQLite storage.
           </div>
         </div>
       </div>
@@ -515,42 +686,36 @@
             <span class="brand-title">DoseDay</span>
           </div>
           <p class="footer-copy">
-            The modern, privacy-first medication reminder and pill tracking app designed to make healthy routines effortless.
+            See your health routine clearly. The offline-first medication tracker and smart alarm companion inspired by Tarsi &amp; GCash UI.
           </p>
         </div>
 
         <div class="footer-col">
-          <h5>Quick Links</h5>
+          <h5>Explore</h5>
           <ul class="footer-links">
-            <li><a href="#features">Features</a></li>
-            <li><a href="#interactive-demo">Live Simulator</a></li>
-            <li><a href="#how-to-install">Installation Guide</a></li>
-            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#see-clearly">Dashboard Features</a></li>
+            <li><a href="#talk-to-doseday">Talk to Tarsi AI</a></li>
+            <li><a href="#notifications-system">Smart Notifications</a></li>
+            <li><a href="#interactive-demo">7-Day Planner</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h5>Direct Download</h5>
+          <h5>Download</h5>
           <ul class="footer-links">
-            <li><a href="downloads/DoseDay.apk" download="DoseDay.apk">DoseDay APK (Latest Release)</a></li>
-            <li><a href="downloads/DoseDay-release-v1.0.apk" download="DoseDay-release-v1.0.apk">Version 1.0.0 Mirror</a></li>
-            <li><span style="font-size:0.85rem; color:var(--text-muted);">Android 8.0 to Android 15</span></li>
+            <li><a href="downloads/DoseDay.apk" download="DoseDay.apk">DoseDay Android APK</a></li>
+            <li><a href="downloads/DoseDay-release-v1.0.apk" download="DoseDay-release-v1.0.apk">Mirror Release APK</a></li>
+            <li><span style="font-size:0.85rem; color:var(--text-muted);">Android 8.0 – Android 15</span></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <div>© 2026 DoseDay. All rights reserved. Free & Open Personal Health Tool.</div>
-        <div>Built with Flutter & SQLite • 100% Offline</div>
+        <div>© 2026 DoseDay. Built with Flutter &amp; SQLite • 100% Offline &amp; Private.</div>
+        <div>Tarsi Forest Green &amp; GCash Super-App UI Edition</div>
       </div>
     </div>
   </footer>
-
-  <!-- Lightbox Modal for Full Screenshot Zoom -->
-  <div class="lightbox-modal" id="lightbox-modal" role="dialog" aria-modal="true" aria-label="Screenshot Preview">
-    <button class="lightbox-close" id="lightbox-close" aria-label="Close Preview">&times;</button>
-    <img src="" alt="Enlarged Screenshot" class="lightbox-img" id="lightbox-img">
-  </div>
 
   <script src="app.js"></script>
 </body>

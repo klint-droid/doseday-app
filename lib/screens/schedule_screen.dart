@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/dose_log.dart';
 import '../models/medication.dart';
 import '../services/database_service.dart';
+import '../services/notification_service.dart';
 import '../theme/app_theme.dart';
 import '../utils/formatters.dart';
 import '../widgets/common.dart';
@@ -27,7 +28,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   late final PageController _weekPageController;
   static const int _initialWeekPage = 1000;
 
-  String _selectedFilter = 'All'; // All, To do, In Progress, Completed
+  String _selectedFilter = 'All'; // All, To do, Due Now, Completed
   List<Medication> _medications = [];
   List<DoseLog> _logs = [];
   bool _busy = true;
@@ -73,6 +74,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       time: s.time,
       status: status,
     );
+    if (status == DoseStatus.taken && s.med.id != null) {
+      await NotificationService.instance.checkAndNotifyLowStock(s.med.id!);
+    }
     if (!mounted) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
@@ -107,7 +111,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
       if (_selectedFilter == 'All') return true;
       if (_selectedFilter == 'To do') return status == null && !isDue;
-      if (_selectedFilter == 'In Progress') return isDue || status == null;
+      if (_selectedFilter == 'Due Now' || _selectedFilter == 'In Progress') {
+        return isDue || status == null;
+      }
       if (_selectedFilter == 'Completed' || _selectedFilter == 'Done') return isDone;
       return true;
     }).toList();
@@ -118,31 +124,19 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Top Bar matching Slide 2 (Back chevron + "Today's Tasks" + Notification Bell)
             _buildTopBar(),
-
-            // Week range and prev/next week navigation header
             _buildWeekHeader(),
-
             const SizedBox(height: 4),
-
-            // Horizontal Date Picker Strip (Monday to Sunday, swipeable between weeks)
             _buildDateStrip(),
-
             const SizedBox(height: 14),
-
-            // Filter Chips matching Slide 2 (All, To do, In Progress, Completed)
             _buildFilterChips(),
-
             const SizedBox(height: 12),
-
-            // Doses / Tasks List matching Slide 2
             Expanded(
               child: _busy
                   ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
                   : filtered.isNotEmpty
                       ? ListView.builder(
-                          padding: const EdgeInsets.fromLTRB(20, 6, 20, 100),
+                          padding: const EdgeInsets.fromLTRB(20, 6, 20, 110),
                           itemCount: filtered.length,
                           itemBuilder: (_, i) => _buildDoseCard(
                             filtered[i],
@@ -161,46 +155,28 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // Top Bar matching Slide 2: Back button + "Today's Tasks" + Bell
   Widget _buildTopBar() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
       child: Row(
         children: [
-          // Back button container matching Slide 2
-          InkWell(
-            onTap: () {
-              if (Navigator.canPop(context)) {
-                Navigator.pop(context);
-              }
-            },
-            borderRadius: BorderRadius.circular(12),
-            child: Container(
-              width: 40,
-              height: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.borderLight, width: 1.2),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.03),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  )
-                ],
-              ),
-              child: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 16,
-                color: AppColors.text,
-              ),
+          Container(
+            width: 40,
+            height: 40,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: AppColors.primaryContainer,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(
+              Icons.calendar_month_rounded,
+              size: 20,
+              color: AppColors.primary,
             ),
           ),
           Expanded(
             child: Text(
-              "Today's Tasks",
+              '7-Day Dose Plan',
               textAlign: TextAlign.center,
               style: GoogleFonts.plusJakartaSans(
                 fontSize: 19,
@@ -210,7 +186,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ),
             ),
           ),
-          // Notification bell with purple dot matching Slide 2
           Material(
             color: Colors.transparent,
             child: InkWell(
@@ -226,18 +201,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: AppColors.borderLight, width: 1.2),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.03),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
-                        )
-                      ],
                     ),
                     child: const Icon(
                       Icons.notifications_none_rounded,
                       size: 21,
-                      color: AppColors.text,
+                      color: AppColors.primary,
                     ),
                   ),
                   Positioned(
@@ -247,7 +215,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       width: 8,
                       height: 8,
                       decoration: const BoxDecoration(
-                        color: AppColors.primary,
+                        color: AppColors.peachColor,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -261,7 +229,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // Computes the Monday (start of week) for a given week offset
   DateTime _mondayForOffset(int offset) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -281,7 +248,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     }
   }
 
-  // Week range label + prev/next week chevron buttons + Today reset button
   Widget _buildWeekHeader() {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -294,7 +260,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       child: Row(
         children: [
           const Icon(
-            Icons.calendar_month_rounded,
+            Icons.date_range_rounded,
             size: 16,
             color: AppColors.primary,
           ),
@@ -384,7 +350,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // Horizontal Date Strip: Always starts Monday -> Sunday, swipeable to restart next/prev week
   Widget _buildDateStrip() {
     return SizedBox(
       height: 96,
@@ -422,7 +387,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // Individual Day Card in the 7-day Monday to Sunday strip matching Slide 2
   Widget _buildDayCard(DateTime d) {
     final now = DateTime.now();
     final isToday = dateKey(d) == dateKey(now);
@@ -443,19 +407,19 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         duration: const Duration(milliseconds: 220),
         margin: const EdgeInsets.symmetric(horizontal: 2.5, vertical: 3),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF5F33E1) : Colors.white,
+          color: isSelected ? AppColors.primary : Colors.white,
           borderRadius: BorderRadius.circular(16),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: const Color(0xFF5F33E1).withValues(alpha: .38),
+                    color: AppColors.primary.withValues(alpha: .32),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   )
                 ]
               : [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: .025),
+                    color: Colors.black.withValues(alpha: .02),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   )
@@ -517,9 +481,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // Filter Chips matching Slide 2 (All, To do, In Progress, Completed)
   Widget _buildFilterChips() {
-    const filters = ['All', 'To do', 'In Progress', 'Completed'];
+    const filters = ['All', 'To do', 'Due Now', 'Completed'];
     return SizedBox(
       height: 38,
       child: ListView.separated(
@@ -537,7 +500,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: active ? const Color(0xFF5F33E1) : const Color(0xFFF0EDFD),
+                color: active ? AppColors.primary : AppColors.primaryContainer,
                 borderRadius: BorderRadius.circular(18),
               ),
               child: Text(
@@ -545,7 +508,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 style: GoogleFonts.plusJakartaSans(
                   fontSize: 12.5,
                   fontWeight: FontWeight.w700,
-                  color: active ? Colors.white : const Color(0xFF5F33E1),
+                  color: active ? Colors.white : AppColors.primary,
                 ),
               ),
             ),
@@ -555,7 +518,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // Dose card matching Slide 2
   Widget _buildDoseCard(_Slot s, {required int index, required bool isToday, required String nowTime}) {
     final log = _logFor(s);
     final status = log?.status;
@@ -563,12 +525,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     final isDue = isToday && status == null && s.time.compareTo(nowTime) <= 0;
 
     final pillLabel = isDone
-        ? 'Done'
+        ? 'Taken ✓'
         : isDue
-            ? 'In Progress'
+            ? 'Due Now'
             : status == DoseStatus.skipped
                 ? 'Skipped'
-                : 'To-do';
+                : 'Scheduled';
 
     final pillStatus = isDone
         ? 'done'
@@ -579,10 +541,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 : 'todo';
 
     final badges = [
-      (bg: AppColors.pinkBg, color: AppColors.pinkColor, icon: Icons.work_outline_rounded),
-      (bg: AppColors.pinkBg, color: AppColors.pinkColor, icon: Icons.work_outline_rounded),
-      (bg: AppColors.primaryContainer, color: AppColors.primary, icon: Icons.person_outline_rounded),
-      (bg: AppColors.peachBg, color: AppColors.peachColor, icon: Icons.menu_book_rounded),
+      (bg: AppColors.primaryContainer, color: AppColors.primary, icon: Icons.medication_rounded),
+      (bg: AppColors.peachBg, color: AppColors.peachColor, icon: Icons.wb_sunny_rounded),
+      (bg: AppColors.pinkBg, color: AppColors.pinkColor, icon: Icons.favorite_outline_rounded),
+      (bg: AppColors.blueBg, color: AppColors.blueColor, icon: Icons.nightlight_round),
     ];
     final b = badges[index % badges.length];
 
@@ -629,8 +591,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 icon: b.icon,
                 bg: b.bg,
                 color: b.color,
-                size: 34,
-                radius: 10,
+                size: 36,
+                radius: 11,
               ),
             ],
           ),
@@ -647,7 +609,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 '${formatTime(s.time)}  •  ${s.med.doseLabel}',
                 style: GoogleFonts.plusJakartaSans(
                   fontSize: 12,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w700,
                   color: AppColors.textMuted,
                 ),
               ),
@@ -655,18 +617,39 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               FigmaStatusPill(label: pillLabel, status: pillStatus),
               const SizedBox(width: 6),
               PopupMenuButton<String>(
-                tooltip: 'Record dose',
+                tooltip: 'Dose options',
                 icon: const Icon(Icons.more_vert_rounded, size: 20, color: AppColors.textMuted),
-                onSelected: (v) => _mark(s, v),
+                onSelected: (v) async {
+                  if (v == 'snooze') {
+                    await NotificationService.instance.scheduleSnooze(s.med, s.time, minutes: 10);
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('⏰ Snoozed ${s.med.name} for 10 minutes'),
+                          backgroundColor: AppColors.primaryDark,
+                        ),
+                      );
+                    }
+                  } else {
+                    await _mark(s, v);
+                  }
+                },
                 itemBuilder: (_) => [
                   if (!isDone)
                     PopupMenuItem(
                       value: DoseStatus.taken,
                       child: ListTile(
-                        leading: const Icon(Icons.check_circle_outline, color: AppColors.mintColor),
-                        title: Text('Mark as Done', style: GoogleFonts.plusJakartaSans()),
+                        leading: const Icon(Icons.check_circle_outline, color: AppColors.primary),
+                        title: Text('Mark as Taken', style: GoogleFonts.plusJakartaSans()),
                       ),
                     ),
+                  PopupMenuItem(
+                    value: 'snooze',
+                    child: ListTile(
+                      leading: const Icon(Icons.snooze_rounded, color: AppColors.primaryDark),
+                      title: Text('Snooze 10 mins', style: GoogleFonts.plusJakartaSans()),
+                    ),
+                  ),
                   if (status != DoseStatus.skipped)
                     PopupMenuItem(
                       value: DoseStatus.skipped,
@@ -684,61 +667,62 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // Showcase Demo Tasks matching Slide 2 exactly
   Widget _buildDemoTasksList({required bool isToday, required String nowTime}) {
-    final demoTasks = [
+    final demoDoses = [
       (
-        category: 'Grocery shopping app design',
-        title: 'Market Research',
-        time: '10:00 AM',
+        category: 'Take after breakfast • Antibiotic course',
+        title: 'Amoxicillin 500mg',
+        time: '08:00 AM',
         status: 'done',
-        label: 'Done',
-        icon: Icons.work_outline_rounded,
-        bg: AppColors.pinkBg,
-        color: AppColors.pinkColor,
-      ),
-      (
-        category: 'Grocery shopping app design',
-        title: 'Competitive Analysis',
-        time: '12:00 PM',
-        status: 'in_progress',
-        label: 'In Progress',
-        icon: Icons.work_outline_rounded,
-        bg: AppColors.pinkBg,
-        color: AppColors.pinkColor,
-      ),
-      (
-        category: 'Uber Eats redesign challenge',
-        title: 'Create Low-fidelity Wireframe',
-        time: '07:00 PM',
-        status: 'todo',
-        label: 'To-do',
-        icon: Icons.person_outline_rounded,
+        label: 'Taken ✓',
+        icon: Icons.medication_rounded,
         bg: AppColors.primaryContainer,
         color: AppColors.primary,
       ),
       (
-        category: 'About design sprint',
-        title: 'How to pitch a Design Sprint',
-        time: '09:00 PM',
-        status: 'todo',
-        label: 'To-do',
-        icon: Icons.menu_book_rounded,
+        category: 'Daily morning supplement • With meal',
+        title: 'Vitamin D3 + K2 (2000 IU)',
+        time: '12:00 PM',
+        status: 'in_progress',
+        label: 'Due Now',
+        icon: Icons.wb_sunny_rounded,
         bg: AppColors.peachBg,
         color: AppColors.peachColor,
       ),
+      (
+        category: 'Blood pressure maintenance • Evening',
+        title: 'Losartan Potassium 50mg',
+        time: '07:00 PM',
+        status: 'todo',
+        label: 'Scheduled',
+        icon: Icons.favorite_outline_rounded,
+        bg: AppColors.pinkBg,
+        color: AppColors.pinkColor,
+      ),
+      (
+        category: 'Before bedtime • Heart & omega wellness',
+        title: 'Omega-3 Fish Oil 1000mg',
+        time: '09:00 PM',
+        status: 'todo',
+        label: 'Scheduled',
+        icon: Icons.nightlight_round,
+        bg: AppColors.blueBg,
+        color: AppColors.blueColor,
+      ),
     ];
 
-    final filteredDemo = demoTasks.where((t) {
+    final filteredDemo = demoDoses.where((t) {
       if (_selectedFilter == 'All') return true;
       if (_selectedFilter == 'To do') return t.status == 'todo';
-      if (_selectedFilter == 'In Progress') return t.status == 'in_progress';
+      if (_selectedFilter == 'Due Now' || _selectedFilter == 'In Progress') {
+        return t.status == 'in_progress';
+      }
       if (_selectedFilter == 'Completed' || _selectedFilter == 'Done') return t.status == 'done';
       return true;
     }).toList();
 
     return ListView.builder(
-      padding: const EdgeInsets.fromLTRB(20, 6, 20, 100),
+      padding: const EdgeInsets.fromLTRB(20, 6, 20, 110),
       itemCount: filteredDemo.length,
       itemBuilder: (_, i) {
         final t = filteredDemo[i];
@@ -783,8 +767,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     icon: t.icon,
                     bg: t.bg,
                     color: t.color,
-                    size: 34,
-                    radius: 10,
+                    size: 36,
+                    radius: 11,
                   ),
                 ],
               ),
@@ -801,8 +785,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     t.time,
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textMuted,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primary,
                     ),
                   ),
                   const Spacer(),
@@ -816,38 +800,39 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  Widget _buildNoFilterMatch() => Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const PastelIconBadge(
-                icon: Icons.filter_alt_off_rounded,
-                bg: AppColors.primaryContainer,
-                color: AppColors.primary,
-                size: 54,
-                radius: 16,
+  Widget _buildNoFilterMatch() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.task_alt_rounded,
+              size: 48,
+              color: AppColors.primary,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'No doses in "$_selectedFilter"',
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 16,
+                fontWeight: FontWeight.w800,
+                color: AppColors.text,
               ),
-              const SizedBox(height: 14),
-              Text(
-                'No tasks match "$_selectedFilter"',
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.text,
-                ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Switch filter tabs above or tap + to add a new medication reminder.',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 13,
+                color: AppColors.textMuted,
               ),
-              const SizedBox(height: 6),
-              Text(
-                'Select another filter to view your tasks.',
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 13,
-                  color: AppColors.textMuted,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
 }
