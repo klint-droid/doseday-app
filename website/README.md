@@ -8,8 +8,7 @@ This folder contains the complete, standalone landing page and direct APK downlo
 - **`styles.css`**: Vanilla CSS with glassmorphism, responsive CSS grid, floating animations, and mobile chassis styling.
 - **`app.js`**: Interactive logic (Monday–Sunday week simulator, reminder chime audio preview, screen switcher, QR code generator).
 - **`downloads/`**:
-  - `DoseDay.apk`: The production release APK (~58.7 MB, built with Flutter for Android 8.0 through Android 15).
-  - `DoseDay-release-v1.0.apk`: Version 1.0.0 release mirror.
+  - `DoseDay.apk`: The production 64-bit (`arm64-v8a`) release APK built with Flutter for Android 8.0 through Android 15.
 - **`assets/`**:
   - `images/`: High-resolution Figma UI screenshots, app logo, and avatars.
   - `videos/`: Splash screen animation video.
